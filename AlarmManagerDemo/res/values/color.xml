@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary_color">@color/blue_base</color>
+    
+    <!-- 黑白 -->
+    <color name="transparent">#0000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_shallow">#f7f7f7</color>
+    <color name="black_translucent">#6000</color>
+    <color name="black_shallow">#666666</color>
+
+    <!-- 灰色 -->
+    <color name="gray_darker">#333333</color>
+    <color name="gray_dark">#555555</color>
+    <color name="gray_base">#999999</color>
+    <color name="gray_light">#BBBBBB</color>
+    <color name="gray_bg">#F0F0F0</color>
+    <color name="gray_lighter">#F0F0F0</color>  <!-- 项目的背景色 -->
+    <color name="gray_lightest">#FFB2B2B2</color>
+    <color name="gray_light_d4">#FFD4D4D4</color>
+
+    <color name="gray_66">#FF666666</color>
+    
+    <color name="search_bg">#909090</color>
+
+    <!-- 带色颜色 -->
+    <!-- 蓝色 -->
+    <color name="blue_base">#18B4ED</color>
+    <color name="blue_pressed">#9918B4ED</color>
+
+    <!-- 蓝绿色 -->
+    <color name="teal">#6ED3C5</color>
+
+    <!-- 红色 -->
+    <color name="red">#f76f6f</color>
+    <color name="red_pressed">#99f76f6f</color>
+
+    <!-- 绿色 -->
+    <color name="green">#65bd28</color>
+    <color name="green_pressed">#9965bd28</color>
+    <color name="white_grey">#f9f9f7</color>
+    <!-- INDICATORS -->
+    <bool name="default_circle_indicator_centered">true</bool>
+
+    <color name="default_circle_indicator_fill_color">#FFFFFFFF</color>
+    <color name="default_circle_indicator_page_color">#00000000</color>
+    <integer name="default_circle_indicator_orientation">0</integer>
+
+    <dimen name="default_circle_indicator_radius">4dp</dimen>
+
+    <bool name="default_circle_indicator_snap">true</bool>
+
+    <color name="default_circle_indicator_stroke_color">#FFFFFFFF</color>
+
+    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+    
+    <!-- 灰色 -->
+     <bool name="base_default_circle_indicator_centered">true</bool>
+
+    <color name="base_default_circle_indicator_fill_color">#FFFFFFFF</color>
+    <color name="base_default_circle_indicator_page_color">#FFCCCCCC</color>
+    <integer name="base_default_circle_indicator_orientation">0</integer>
+
+    <dimen name="base_default_circle_indicator_radius">6dp</dimen>
+
+    <bool name="base_default_circle_indicator_snap">true</bool>
+
+    <color name="base_default_circle_indicator_stroke_color">#00FFFFFF</color>
+
+    <dimen name="base_default_circle_indicator_stroke_width">1dp</dimen>
+    
+    <!-- 橘色 -->
+    <color name="orange">#f6ab45</color>
+    
+    <color name="button_rounded_teal">#5EC6B6</color>
+
+</resources>

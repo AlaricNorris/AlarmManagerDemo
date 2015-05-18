@@ -8,13 +8,22 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
 
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.example.alarmmanagerdemo" >
+    </instrumentation>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         <activity
             android:name="com.example.alarmmanagerdemo.NotificationActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.alarmmanagerdemo.AlarmReminderHomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +50,8 @@
 
         <service android:name="com.example.alarmmanagerdemo.CallupNotificationService" >
         </service>
+
+        <uses-library android:name="android.test.runner" />
     </application>
 
 </manifest>
