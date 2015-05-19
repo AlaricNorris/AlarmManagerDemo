@@ -1,7 +1,7 @@
 /**
  * 	AlarmReminderHomeActivity.java
  * 	com.example.alarmmanagerdemo
- * 	Function： 	TODO 
+ * 	Function： 	主界面 
  *   ver     date      		author
  * 	──────────────────────────────────
  *   		 2015-5-18 		Norris
@@ -10,19 +10,21 @@
  *	2015-5-18	下午2:36:46	Modified By Norris 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
-package com.example.alarmmanagerdemo ;
+package com.example.alarmmanagerdemo.ui ;
 
 import java.util.ArrayList ;
-import java.util.Date ;
 import android.app.Activity ;
 import android.content.Intent ;
 import android.os.Bundle ;
-import android.os.Handler ;
 import android.support.v4.widget.SwipeRefreshLayout ;
-import android.util.Log ;
 import android.view.View ;
 import android.widget.ListView ;
+import com.example.alarmmanagerdemo.ClickUtil ;
+import com.example.alarmmanagerdemo.R ;
+import com.example.alarmmanagerdemo.R.id ;
+import com.example.alarmmanagerdemo.R.layout ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
+import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import com.example.alarmmanagerdemo.thirdparty.baseadapter.BaseAdapterHelper ;
 import com.example.alarmmanagerdemo.thirdparty.baseadapter.BaseQuickAdapter ;
 import com.example.alarmmanagerdemo.thirdparty.baseadapter.QuickAdapter ;
@@ -47,8 +49,6 @@ import de.greenrobot.event.EventBus ;
 public class AlarmReminderHomeActivity extends Activity implements
 		SwipeRefreshLayout.OnRefreshListener {
 
-	private static final int REFRESH_COMPLETE = 0X110 ;
-
 	private SwipeRefreshLayout mSwipeLayout ;
 
 	private ListView mListView ;
@@ -56,19 +56,6 @@ public class AlarmReminderHomeActivity extends Activity implements
 	private ArrayList<AlarmReminderEntity> mArrayList ;
 
 	private BaseQuickAdapter<AlarmReminderEntity , BaseAdapterHelper> mAdapter ;
-
-	private Handler mHandler = new Handler() {
-
-		public void handleMessage(android.os.Message msg) {
-			switch(msg.what) {
-				case REFRESH_COMPLETE :
-					mAdapter.notifyDataSetChanged() ;
-					mSwipeLayout.setRefreshing(false) ;
-					isRefreshing = false ;
-					break ;
-			}
-		} ;
-	} ;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState) ;
@@ -93,7 +80,6 @@ public class AlarmReminderHomeActivity extends Activity implements
 					Thread.sleep(2000) ;
 				}
 				catch(InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace() ;
 				}
 				mArrayList = new AlarmReminderDAO(getApplicationContext()).queryAll() ;
@@ -158,27 +144,27 @@ public class AlarmReminderHomeActivity extends Activity implements
 		if(ClickUtil.isFastDoubleClick()) {
 			return ;
 		}
-//		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;
-//		mIntent.putExtra("EditFlag" , false) ;
-//		startActivity(mIntent) ;
-		new Thread() {
-
-			public void run() {
-				AlarmReminderEntity mAlarmReminderEntity = new AlarmReminderEntity() ;
-				mAlarmReminderEntity.setTitle("add") ;
-				mAlarmReminderEntity.setDescription("addTest ") ;
-				mAlarmReminderEntity.setTimesperday(1) ;
-				mAlarmReminderEntity.setStratdate(new Date()) ;
-				mAlarmReminderEntity.setEnddate(new Date(2015 - 1900 , 6 - 1 , 11)) ;
-				boolean result = new AlarmReminderDAO(getApplicationContext())
-						.createOrUpdate(mAlarmReminderEntity) ;
-				if(result) {
-					loadOrRefreshData() ;
-				}
-				else
-					Log.i("TestTag" , "fail") ;
-			} ;
-		}.start() ;
+		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;
+		mIntent.putExtra("EditFlag" , false) ;
+		startActivity(mIntent) ;
+//		new Thread() {
+//
+//			public void run() {
+//				AlarmReminderEntity mAlarmReminderEntity = new AlarmReminderEntity() ;
+//				mAlarmReminderEntity.setTitle("add") ;
+//				mAlarmReminderEntity.setDescription("addTest ") ;
+//				mAlarmReminderEntity.setTimesperday(1) ;
+//				mAlarmReminderEntity.setStratdate(new Date()) ;
+//				mAlarmReminderEntity.setEnddate(new Date(2015 - 1900 , 6 - 1 , 11)) ;
+//				boolean result = new AlarmReminderDAO(getApplicationContext())
+//						.createOrUpdate(mAlarmReminderEntity) ;
+//				if(result) {
+//					loadOrRefreshData() ;
+//				}
+//				else
+//					Log.i("TestTag" , "fail") ;
+//			} ;
+//		}.start() ;
 	}
 
 	/**

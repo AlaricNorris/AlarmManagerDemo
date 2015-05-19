@@ -10,11 +10,12 @@
  *	2015-5-18	下午4:29:35	Modified By Norris 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
-package com.example.alarmmanagerdemo ;
+package com.example.alarmmanagerdemo.db ;
 
 import java.sql.SQLException ;
 import android.content.Context ;
 import android.database.sqlite.SQLiteDatabase ;
+import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import com.j256.ormlite.android.apptools.OpenHelperManager ;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper ;
 import com.j256.ormlite.dao.Dao ;
@@ -47,7 +48,7 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	 * 	int			:		DATABASE_VERSION	
 	 * 	@since Ver 1.0
 	 */
-	public static final int DATABASE_VERSION = 3 ;
+	public static final int DATABASE_VERSION = 1 ;
 
 	/**
 	 * 	Creates a new instance of AlarmReminderDBOpenHelper.
@@ -81,6 +82,21 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	@ Override
 	public void onUpgrade(SQLiteDatabase database , ConnectionSource connectionSource ,
 			int oldVersion , int newVersion) {
+		try {
+			TableUtils.dropTable(connectionSource , AlarmReminderEntity.class , true) ;
+			onCreate(database , connectionSource) ;
+		}
+		catch(Exception e) {
+			e.printStackTrace() ;
+		}
+	}
+
+	/**
+	 * 	(non-Javadoc)
+	 * 	@see android.database.sqlite.SQLiteOpenHelper#onDowngrade(android.database.sqlite.SQLiteDatabase, int, int)
+	 */
+	@ Override
+	public void onDowngrade(SQLiteDatabase database , int oldVersion , int newVersion) {
 		try {
 			TableUtils.dropTable(connectionSource , AlarmReminderEntity.class , true) ;
 			onCreate(database , connectionSource) ;

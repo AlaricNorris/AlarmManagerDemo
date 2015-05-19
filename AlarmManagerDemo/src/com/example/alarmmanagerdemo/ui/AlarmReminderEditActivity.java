@@ -10,8 +10,11 @@
  *	2015-5-18	下午3:56:53	Modified By Norris 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
-package com.example.alarmmanagerdemo ;
+package com.example.alarmmanagerdemo.ui ;
 
+import com.example.alarmmanagerdemo.R ;
+import com.example.alarmmanagerdemo.R.id ;
+import com.example.alarmmanagerdemo.R.layout ;
 import android.app.Activity ;
 import android.os.Bundle ;
 import android.widget.LinearLayout ;

@@ -10,7 +10,7 @@
  *	2015-5-18	下午4:04:47	Modified By Norris 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
-package com.example.alarmmanagerdemo ;
+package com.example.alarmmanagerdemo.entities ;
 
 import java.text.ParseException ;
 import java.text.SimpleDateFormat ;
@@ -66,6 +66,15 @@ public class AlarmReminderEntity {
 
 	@ DatabaseField ( columnName = "timesperday" )
 	private Integer timesperday ;
+
+	/**
+	 * 	在何时触发
+	 * 	使用Json存储
+	 * 	String			:		TriggerAtTimes	
+	 * 	@since Ver 1.0
+	 */
+	@ DatabaseField ( columnName = "triggerattimes" )
+	private String TriggerAtTimes ;
 
 	/**
 	 * Android System Params
@@ -211,6 +220,22 @@ public class AlarmReminderEntity {
 	}
 
 	/**
+	 * 	triggerAtTimes
+	 * 	@return  	the triggerAtTimes
+	 */
+	public String getTriggerAtTimes() {
+		return TriggerAtTimes ;
+	}
+
+	/**
+	 *	triggerAtTimes
+	 *	@param   triggerAtTimes    the triggerAtTimes to set
+	 */
+	public void setTriggerAtTimes(String triggerAtTimes) {
+		TriggerAtTimes = triggerAtTimes ;
+	}
+
+	/**
 	 * 	needVibration
 	 * 	@return  	the needVibration
 	 */
@@ -234,7 +259,7 @@ public class AlarmReminderEntity {
 	public String toString() {
 		return "AlarmReminderEntity [id=" + id + ", title=" + title + ", description="
 				+ description + ", stratdate=" + stratdate + ", enddate=" + enddate
-				+ ", timesperday=" + timesperday + ", needVibration=" + needVibration
-				+ ", mSimpleDateFormat=" + mSimpleDateFormat + "]" ;
+				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + TriggerAtTimes
+				+ ", needVibration=" + needVibration + "]" ;
 	}
 }

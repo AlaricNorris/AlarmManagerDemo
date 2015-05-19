@@ -12,6 +12,7 @@
  */
 package com.example.alarmmanagerdemo ;
 
+import com.example.alarmmanagerdemo.entities.NotificationEntity ;
 import android.app.Notification ;
 import android.app.NotificationManager ;
 import android.app.PendingIntent ;

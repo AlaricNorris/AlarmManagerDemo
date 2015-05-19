@@ -15,8 +15,8 @@ package com.example.alarmmanagerdemo.testcase ;
 import java.util.Date ;
 import android.test.AndroidTestCase ;
 import android.util.Log ;
-import com.example.alarmmanagerdemo.AlarmReminderEntity ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
+import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import com.j256.ormlite.android.apptools.OpenHelperManager ;
 
 /**

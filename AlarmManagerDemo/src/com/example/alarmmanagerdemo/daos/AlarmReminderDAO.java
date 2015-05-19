@@ -15,8 +15,8 @@ package com.example.alarmmanagerdemo.daos ;
 import java.sql.SQLException ;
 import java.util.ArrayList ;
 import android.content.Context ;
-import com.example.alarmmanagerdemo.AlarmReminderDBOpenHelper ;
-import com.example.alarmmanagerdemo.AlarmReminderEntity ;
+import com.example.alarmmanagerdemo.db.AlarmReminderDBOpenHelper ;
+import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import com.j256.ormlite.dao.Dao ;
 import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus ;
 

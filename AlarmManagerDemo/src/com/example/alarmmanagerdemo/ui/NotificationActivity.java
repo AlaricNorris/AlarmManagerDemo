@@ -1,5 +1,10 @@
-package com.example.alarmmanagerdemo ;
+package com.example.alarmmanagerdemo.ui ;
 
+import com.example.alarmmanagerdemo.R ;
+import com.example.alarmmanagerdemo.R.drawable ;
+import com.example.alarmmanagerdemo.R.id ;
+import com.example.alarmmanagerdemo.R.layout ;
+import com.example.alarmmanagerdemo.entities.NotificationEntity ;
 import android.app.Activity ;
 import android.app.Notification ;
 import android.app.NotificationManager ;

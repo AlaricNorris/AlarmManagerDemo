@@ -1,8 +1,13 @@
-package com.example.alarmmanagerdemo ;
+package com.example.alarmmanagerdemo.ui ;
 
 import java.sql.Time ;
 import java.util.Calendar ;
 import java.util.TimeZone ;
+import com.example.alarmmanagerdemo.AlarmReceiver ;
+import com.example.alarmmanagerdemo.R ;
+import com.example.alarmmanagerdemo.R.id ;
+import com.example.alarmmanagerdemo.R.layout ;
+import com.example.alarmmanagerdemo.entities.NotificationEntity ;
 import android.app.Activity ;
 import android.app.AlarmManager ;
 import android.app.PendingIntent ;

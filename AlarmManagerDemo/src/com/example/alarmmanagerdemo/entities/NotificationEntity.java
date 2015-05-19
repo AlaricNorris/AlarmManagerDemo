@@ -10,7 +10,7 @@
  *	2015-5-12	下午3:53:14	Modified By Norris 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
-package com.example.alarmmanagerdemo ;
+package com.example.alarmmanagerdemo.entities ;
 
 import java.io.Serializable ;
 
