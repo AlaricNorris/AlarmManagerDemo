@@ -84,11 +84,12 @@ public class ClickUtil {
 	private static long mLastClickMillis ;
 
 	/**
-	 * 	isFastDoubleClick:(默认判断连续点击)
+	 * 	isFastDoubleClick:(默认判断连续点击，默认延时100毫秒)
 	 *  ──────────────────────────────────
 	 * 	@return	
 	 *	@version	Ver 1.0	
 	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 * 	@see		{@link #isFastDoubleClick(long)}
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 * 	Modified By 	AlaricNorris		 2014-11-9下午10:34:19
 	 *	Modifications:	modified
@@ -105,15 +106,24 @@ public class ClickUtil {
 	}
 
 	/**
-	 * 	isFastDoubleClick:(自定义判断连击  根据传入参数来决定有无连击)
+	 * 	isFastDoubleClick:(自定义判断连击  根据传入延时参数来决定有无连击)
 	 *  ──────────────────────────────────
 	 * 	@param 		inDeltaTime
 	 * 	@return	
 	 *	@version	Ver 1.0	
 	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 * 	@see		
+	 * 	{@link #DELTA_100}
+	 * 	{@link #DELTA_200}
+	 * 	{@link #DELTA_300}
+	 * 	{@link #DELTA_400}
+	 * 	{@link #DELTA_500}
+	 * 	{@link #DELTA_600}
+	 * 	{@link #DELTA_700}
+	 * 	{@link #DELTA_800}
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 * 	Modified By 	AlaricNorris		 2014-11-9下午10:36:52
-	 *	Modifications:	TODO
+	 *	Modifications:	 
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 */
 	public static boolean isFastDoubleClick(long inDeltaTime) {

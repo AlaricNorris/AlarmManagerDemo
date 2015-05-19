@@ -12,9 +12,11 @@
  */
 package com.example.alarmmanagerdemo.entities ;
 
+import java.io.Serializable ;
 import java.text.ParseException ;
 import java.text.SimpleDateFormat ;
 import java.util.Date ;
+import com.example.alarmmanagerdemo.db.AlarmReminderDBOpenHelper ;
 import com.j256.ormlite.field.DatabaseField ;
 import com.j256.ormlite.table.DatabaseTable ;
 
@@ -36,10 +38,17 @@ import com.j256.ormlite.table.DatabaseTable ;
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
 @ DatabaseTable ( tableName = "alarm_reminders" )
-public class AlarmReminderEntity {
+public class AlarmReminderEntity implements Serializable {
+
+	/**
+	 * 	TODO
+	 * 	long			:		serialVersionUID	
+	 * 	@since Ver 1.0
+	 */
+	private static final long serialVersionUID = 1L ;
 
 	@ DatabaseField ( generatedId = true )
-	private Integer id ;
+	private int id ;
 
 	@ DatabaseField ( columnName = "title" )
 	private String title ;
@@ -65,24 +74,47 @@ public class AlarmReminderEntity {
 	private String enddate ;
 
 	@ DatabaseField ( columnName = "timesperday" )
-	private Integer timesperday ;
+	private int timesperday ;
 
 	/**
 	 * 	在何时触发
 	 * 	使用Json存储
 	 * 	String			:		TriggerAtTimes	
-	 * 	@since Ver 1.0
+	 * 	@since {@link AlarmReminderDBOpenHelper#DATABASE_VERSION}
 	 */
 	@ DatabaseField ( columnName = "triggerattimes" )
 	private String TriggerAtTimes ;
 
 	/**
+	 * 	1 	on
+	 * 	0 	off
+	 * 	int			:		isOn	
+	 * 	@since {@link AlarmReminderDBOpenHelper#DATABASE_VERSION}
+	 */
+	@ DatabaseField ( columnName = "isOn" )
+	private int isOn ;
+
+	public static final int FLAG_TRUE = 0x0001 ;
+
+	public static final int FLAG_FALSE = 0x0000 ;
+
+	/**
 	 * Android System Params
 	 */
+	/**
+	 * 	1 	need
+	 *  0	noneed
+	 * 	int			:		needVibration	
+	 * 	@since {@link AlarmReminderDBOpenHelper#DATABASE_VERSION}
+	 */
 	@ DatabaseField ( columnName = "needvibration" )
-	private Integer needVibration ;
+	private int needVibration ;
 
-	public static final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd") ;
+	public static final SimpleDateFormat mSimpleDateFormat_YYYYMMDD_HHMMSS = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss") ;
+
+	public static final SimpleDateFormat mSimpleDateFormat_YYYYMMDD = new SimpleDateFormat(
+			"yyyy-MM-dd") ;
 
 	/**
 	 * 	Creates a new instance of AlarmReminderEntity.
@@ -95,7 +127,7 @@ public class AlarmReminderEntity {
 	 * 	id
 	 * 	@return  	the id
 	 */
-	public Integer getId() {
+	public int getId() {
 		return id ;
 	}
 
@@ -103,7 +135,7 @@ public class AlarmReminderEntity {
 	 *	id
 	 *	@param   id    the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id ;
 	}
 
@@ -150,7 +182,7 @@ public class AlarmReminderEntity {
 	public Date getStratdate() {
 		Date mEndDate = null ;
 		try {
-			mEndDate = mSimpleDateFormat.parse(stratdate) ;
+			mEndDate = mSimpleDateFormat_YYYYMMDD.parse(stratdate) ;
 		}
 		catch(ParseException e) {
 			// TODO Auto-generated catch block
@@ -168,7 +200,7 @@ public class AlarmReminderEntity {
 	}
 
 	public void setStratdate(Date inDate) {
-		this.stratdate = mSimpleDateFormat.format(inDate) ;
+		this.stratdate = mSimpleDateFormat_YYYYMMDD.format(inDate) ;
 	}
 
 	/**
@@ -182,7 +214,7 @@ public class AlarmReminderEntity {
 	public Date getEnddate() {
 		Date mEndDate = null ;
 		try {
-			mEndDate = mSimpleDateFormat.parse(enddate) ;
+			mEndDate = mSimpleDateFormat_YYYYMMDD.parse(enddate) ;
 		}
 		catch(ParseException e) {
 			// TODO Auto-generated catch block
@@ -200,14 +232,14 @@ public class AlarmReminderEntity {
 	}
 
 	public void setEnddate(Date inDate) {
-		this.enddate = mSimpleDateFormat.format(inDate) ;
+		this.enddate = mSimpleDateFormat_YYYYMMDD.format(inDate) ;
 	}
 
 	/**
 	 * 	timesperday
 	 * 	@return  	the timesperday
 	 */
-	public Integer getTimesperday() {
+	public int getTimesperday() {
 		return timesperday ;
 	}
 
@@ -215,7 +247,7 @@ public class AlarmReminderEntity {
 	 *	timesperday
 	 *	@param   timesperday    the timesperday to set
 	 */
-	public void setTimesperday(Integer timesperday) {
+	public void setTimesperday(int timesperday) {
 		this.timesperday = timesperday ;
 	}
 
@@ -236,10 +268,26 @@ public class AlarmReminderEntity {
 	}
 
 	/**
+	 * 	isOn
+	 * 	@return  	the isOn
+	 */
+	public int getIsOn() {
+		return isOn ;
+	}
+
+	/**
+	 *	isOn
+	 *	@param   isOn    the isOn to set
+	 */
+	public void setIsOn(int isOn) {
+		this.isOn = isOn ;
+	}
+
+	/**
 	 * 	needVibration
 	 * 	@return  	the needVibration
 	 */
-	public Integer getNeedVibration() {
+	public int getNeedVibration() {
 		return needVibration ;
 	}
 
@@ -247,7 +295,7 @@ public class AlarmReminderEntity {
 	 *	needVibration
 	 *	@param   needVibration    the needVibration to set
 	 */
-	public void setNeedVibration(Integer needVibration) {
+	public void setNeedVibration(int needVibration) {
 		this.needVibration = needVibration ;
 	}
 
@@ -259,7 +307,7 @@ public class AlarmReminderEntity {
 	public String toString() {
 		return "AlarmReminderEntity [id=" + id + ", title=" + title + ", description="
 				+ description + ", stratdate=" + stratdate + ", enddate=" + enddate
-				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + TriggerAtTimes
-				+ ", needVibration=" + needVibration + "]" ;
+				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + TriggerAtTimes + ", isOn="
+				+ isOn + ", needVibration=" + needVibration + "]" ;
 	}
 }

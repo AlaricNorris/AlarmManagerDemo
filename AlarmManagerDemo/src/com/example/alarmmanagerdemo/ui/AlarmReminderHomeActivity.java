@@ -18,11 +18,11 @@ import android.content.Intent ;
 import android.os.Bundle ;
 import android.support.v4.widget.SwipeRefreshLayout ;
 import android.view.View ;
+import android.widget.AdapterView ;
+import android.widget.AdapterView.OnItemClickListener ;
 import android.widget.ListView ;
 import com.example.alarmmanagerdemo.ClickUtil ;
 import com.example.alarmmanagerdemo.R ;
-import com.example.alarmmanagerdemo.R.id ;
-import com.example.alarmmanagerdemo.R.layout ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import com.example.alarmmanagerdemo.thirdparty.baseadapter.BaseAdapterHelper ;
@@ -47,14 +47,34 @@ import de.greenrobot.event.EventBus ;
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
 public class AlarmReminderHomeActivity extends Activity implements
-		SwipeRefreshLayout.OnRefreshListener {
+		SwipeRefreshLayout.OnRefreshListener , OnItemClickListener {
 
+	/**
+	 * 	下拉刷新组件
+	 * 	SwipeRefreshLayout			:		mSwipeLayout	
+	 * 	@since Ver 1.0
+	 */
 	private SwipeRefreshLayout mSwipeLayout ;
 
+	/**
+	 * 	提醒列表
+	 * 	ListView			:		mListView	
+	 * 	@since Ver 1.0
+	 */
 	private ListView mListView ;
 
+	/**
+	 * 	提醒数据列表
+	 * 	ArrayList<AlarmReminderEntity>			:		mArrayList	
+	 * 	@since Ver 1.0
+	 */
 	private ArrayList<AlarmReminderEntity> mArrayList ;
 
+	/**
+	 * 	万能快捷Adapter
+	 * 	BaseQuickAdapter<AlarmReminderEntity,BaseAdapterHelper>			:		mAdapter	
+	 * 	@since Ver 1.0
+	 */
 	private BaseQuickAdapter<AlarmReminderEntity , BaseAdapterHelper> mAdapter ;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +88,7 @@ public class AlarmReminderHomeActivity extends Activity implements
 				android.R.color.holo_green_light , android.R.color.holo_orange_light ,
 				android.R.color.holo_red_light) ;
 		mListView.setAdapter(mAdapter) ;
+		mListView.setOnItemClickListener(this) ;
 		loadOrRefreshData() ;
 	}
 
@@ -97,11 +118,21 @@ public class AlarmReminderHomeActivity extends Activity implements
 		 * 	@param mArrayList
 		 */
 		public EventEntity_AlarmReminders(ArrayList<AlarmReminderEntity> mArrayList) {
-			super() ;
 			this.mArrayList = mArrayList ;
 		}
 	}
 
+	/**
+	 * 	onEventMainThread:(EventBus事件回调函数)
+	 * 	当加载或者刷新完毕后自动推送至此做数据填充工作
+	 *  ──────────────────────────────────
+	 * 	@param 		inEvent    
+	 * 	@throws 
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　Ver 1.0
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 *	2015-5-19	下午2:00:05	Modified By Norris 
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
 	public void onEventMainThread(EventEntity_AlarmReminders inEvent) {
 		if(inEvent == null) {
 			return ;
@@ -130,6 +161,11 @@ public class AlarmReminderHomeActivity extends Activity implements
 		isRefreshing = false ;
 	}
 
+	/**
+	 * 	是否在刷新的标记
+	 * 	boolean			:		isRefreshing	
+	 * 	@since Ver 1.0
+	 */
 	private boolean isRefreshing ;
 
 	public void onRefresh() {
@@ -175,5 +211,20 @@ public class AlarmReminderHomeActivity extends Activity implements
 	protected void onDestroy() {
 		super.onDestroy() ;
 		EventBus.getDefault().unregister(this) ;
+	}
+
+	/**
+	 * 	(non-Javadoc)
+	 * 	@see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	 */
+	@ Override
+	public void onItemClick(AdapterView< ? > parent , View view , int position , long id) {
+		if(ClickUtil.isFastDoubleClick()) {
+			return ;
+		}
+		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;
+		mIntent.putExtra("AlarmReminder" , mAdapter.getItem(position)) ;
+		mIntent.putExtra("EditFlag" , true) ;
+		startActivity(mIntent) ;
 	}
 }

@@ -14,9 +14,10 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/frame_content"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="155" >
+        android:layout_weight="170" >
     </FrameLayout>
 
     <FrameLayout
@@ -31,7 +32,7 @@
             android:layout_gravity="center"
             android:drawableLeft="@android:drawable/ic_input_add"
             android:drawablePadding="10dip"
-            android:onClick="addReminder"
+            android:onClick="saveReminder"
             android:text="设置提醒" />
     </FrameLayout>
 

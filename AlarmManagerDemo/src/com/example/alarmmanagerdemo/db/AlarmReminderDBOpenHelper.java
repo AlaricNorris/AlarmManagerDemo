@@ -48,7 +48,7 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	 * 	int			:		DATABASE_VERSION	
 	 * 	@since Ver 1.0
 	 */
-	public static final int DATABASE_VERSION = 1 ;
+	public static final int DATABASE_VERSION = 2 ;
 
 	/**
 	 * 	Creates a new instance of AlarmReminderDBOpenHelper.

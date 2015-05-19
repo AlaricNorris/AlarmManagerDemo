@@ -13,6 +13,8 @@
         android:targetPackage="com.example.alarmmanagerdemo" >
     </instrumentation>
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -36,8 +38,13 @@
         <activity android:name="com.example.alarmmanagerdemo.DoSomething" />
 
         <receiver
+            android:name="com.example.alarmmanagerdemo.receivers.AlarmReminderReceiver"
+            android:process=":remote" />
+        <receiver
             android:name="com.example.alarmmanagerdemo.AlarmReceiver"
             android:process=":remote" >
+
+            <!--
             <intent-filter>
                 <action android:name="com.health.billion.broadcast.Alarm.A" />
                 <action android:name="com.health.billion.broadcast.Alarm.B" />
@@ -47,6 +54,7 @@
                 <action android:name="com.health.billion.broadcast.Alarm.F" />
                 <action android:name="com.health.billion.broadcast.Alarm.G" />
             </intent-filter>
+            -->
         </receiver>
 
         <service android:name="com.example.alarmmanagerdemo.CallupNotificationService" >

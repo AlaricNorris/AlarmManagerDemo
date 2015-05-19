@@ -1,113 +1,93 @@
 /**
- * 	AlarmReminderEditActivity.java
- * 	com.example.alarmmanagerdemo
+ * 	AlarmReminderEditFragment.java
+ * 	com.example.alarmmanagerdemo.ui.fragments
  * 	Function： 	TODO 
  *   ver     date      		author
  * 	──────────────────────────────────
- *   		 2015-5-18 		Norris
+ *   		 2015-5-19 		Norris
  *	Copyright (c) 2015, TNT All Rights Reserved.
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
- *	2015-5-18	下午3:56:53	Modified By Norris 
+ *	2015-5-19	下午3:06:28	Modified By Norris 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
-package com.example.alarmmanagerdemo.ui ;
+package com.example.alarmmanagerdemo.ui.fragments ;
 
-import android.app.Activity ;
 import android.app.Fragment ;
-import android.app.FragmentManager ;
-import android.app.FragmentTransaction ;
 import android.os.Bundle ;
+import android.view.LayoutInflater ;
 import android.view.View ;
-import android.widget.LinearLayout ;
-import com.example.alarmmanagerdemo.ClickUtil ;
+import android.view.ViewGroup ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
-import com.example.alarmmanagerdemo.ui.fragments.AlarmReminderEditFragment ;
 
 /**
- *	ClassName:	AlarmReminderEditActivity
+ *	ClassName:	AlarmReminderEditFragment
+ *	Function: 	TODO ADD FUNCTION
+ *	Reason:	 	TODO ADD REASON
  *	@author   	Norris		Norris.sly@gmail.com
  *	@version  	
  *	@since   	Ver 1.0		I used to be a programmer like you, then I took an arrow in the knee 
- *	@Date	 	2015		2015-5-18		下午3:56:53
+ *	@Date	 	2015		2015-5-19		下午3:06:28
  *	@see 	 	
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  *	@Fields 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  *	@Methods 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
- *	2015-5-18	下午3:56:53	Modified By Norris 
+ *	2015-5-19	下午3:06:28	Modified By Norris 
  *	──────────────────────────────────────────────────────────────────────────────────────────────────────
  */
-public class AlarmReminderEditActivity extends Activity {
-
-	private boolean editFlag = false ;
-
-	private FragmentManager mFragmentManager ;
+public class AlarmReminderEditFragment extends Fragment {
 
 	/**
-	 * 	(non-Javadoc)
-	 * 	@see android.app.Activity#onCreate(android.os.Bundle)
-	 */
-	@ Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState) ;
-		setContentView(R.layout.activity_alarm_reminder_edit) ;
-		extractBundleData() ;
-		initContentView() ;
-		
-	}
-
-	private LinearLayout mLinearLayout ;
-
-	/**
-	 * 	initContentView:()
-	 *  ──────────────────────────────────    
+	 * 	newInstance:(带参数新建Fragment)
+	 *  ──────────────────────────────────
+	 * 	@param 		inAlarmReminderEntity
+	 * 	@return    
 	 * 	@throws 
 	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　Ver 1.0
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
-	 *	2015-5-18	下午4:00:29	Modified By Norris 
+	 *	2015-5-19	下午3:09:49	Modified By Norris 
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 */
-	private void initContentView() {
-		mFragmentManager = getFragmentManager() ;
-		FragmentTransaction mTransaction = mFragmentManager.beginTransaction() ;
-		mTransaction.add(R.id.frame_content , new AlarmReminderEditFragment()) ;
-		mTransaction.commit() ;
+	public static Fragment newInstance(AlarmReminderEntity inAlarmReminderEntity) {
+		AlarmReminderEditFragment mFragment = new AlarmReminderEditFragment() ;
+		// Bundle up all of the data needed to create the fragment
+		Bundle mBundle = new Bundle() ;
+		mFragment.setArguments(mBundle) ;
+		if(inAlarmReminderEntity == null) {
+			return ErrorInfoFragment.getInstance(mBundle) ;
+		}
+		return mFragment ;
 	}
-
-	private Bundle mBundle ;
 
 	private AlarmReminderEntity mAlarmReminderEntity ;
 
 	/**
-	 * 	extractBundleData:()
-	 *  ──────────────────────────────────    
-	 * 	@throws 
-	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　Ver 1.0
-	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
-	 *	2015-5-18	下午3:57:54	Modified By Norris 
-	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 * 	(non-Javadoc)
+	 * 	@see android.app.Fragment#onCreate(android.os.Bundle)
 	 */
-	private void extractBundleData() {
+	@ Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState) ;
 		try {
-			mBundle = getIntent().getExtras() ;
+			mAlarmReminderEntity = (AlarmReminderEntity) getArguments().getSerializable(
+					"AlarmReminderEntity") ;
 		}
 		catch(Exception e) {
 		}
-		if(mBundle != null) {
-			editFlag = mBundle.getBoolean("EditFlag") ;
-		}
-		if(editFlag) {
-			mAlarmReminderEntity = (AlarmReminderEntity) mBundle
-					.getSerializable("AlarmReminderEntity") ;
-		}
 	}
 
-	public void saveReminder(View inView) {
-		if(ClickUtil.isFastDoubleClick()) {
-			return ;
+	/**
+	 * 	(non-Javadoc)
+	 * 	@see android.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
+	@ Override
+	public View onCreateView(LayoutInflater inflater , ViewGroup container ,
+			Bundle savedInstanceState) {
+		if(mAlarmReminderEntity == null) {
+			return inflater.inflate(R.layout.fragment_page_error , container) ;
 		}
+		return super.onCreateView(inflater , container , savedInstanceState) ;
 	}
 }
