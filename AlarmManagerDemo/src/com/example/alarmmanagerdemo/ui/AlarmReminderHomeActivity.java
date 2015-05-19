@@ -223,8 +223,12 @@ public class AlarmReminderHomeActivity extends Activity implements
 			return ;
 		}
 		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;
-		mIntent.putExtra("AlarmReminder" , mAdapter.getItem(position)) ;
-		mIntent.putExtra("EditFlag" , true) ;
+		mIntent.putExtra(BUNDLE_KEY_ALARMREMINDER , mAdapter.getItem(position)) ;
+		mIntent.putExtra(BUNDLE_KEY_EDITFLAG , true) ;
 		startActivity(mIntent) ;
 	}
+
+	public static final String BUNDLE_KEY_ALARMREMINDER = "AlarmReminder" ;
+
+	public static final String BUNDLE_KEY_EDITFLAG = "EditFlag" ;
 }

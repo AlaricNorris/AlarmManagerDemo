@@ -71,9 +71,8 @@ public class ErrorInfoFragment extends Fragment {
 	@ Override
 	public View onCreateView(LayoutInflater inflater , ViewGroup container ,
 			Bundle savedInstanceState) {
-		View inView = inflater.inflate(R.layout.fragment_page_error , container) ;
+		View inView = inflater.inflate(R.layout.fragment_page_error , null) ;
 		((TextView) inView.findViewById(R.id.text_errorinfo)).setText("Sorry! Page Error!") ;
 		return inView ;
 	}
-	
 }

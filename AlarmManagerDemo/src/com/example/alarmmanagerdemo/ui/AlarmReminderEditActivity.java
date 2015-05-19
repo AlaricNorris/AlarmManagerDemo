@@ -13,7 +13,6 @@
 package com.example.alarmmanagerdemo.ui ;
 
 import android.app.Activity ;
-import android.app.Fragment ;
 import android.app.FragmentManager ;
 import android.app.FragmentTransaction ;
 import android.os.Bundle ;
@@ -56,7 +55,6 @@ public class AlarmReminderEditActivity extends Activity {
 		setContentView(R.layout.activity_alarm_reminder_edit) ;
 		extractBundleData() ;
 		initContentView() ;
-		
 	}
 
 	private LinearLayout mLinearLayout ;
@@ -73,7 +71,8 @@ public class AlarmReminderEditActivity extends Activity {
 	private void initContentView() {
 		mFragmentManager = getFragmentManager() ;
 		FragmentTransaction mTransaction = mFragmentManager.beginTransaction() ;
-		mTransaction.add(R.id.frame_content , new AlarmReminderEditFragment()) ;
+		mTransaction.add(R.id.frame_content ,
+				AlarmReminderEditFragment.newInstance(mAlarmReminderEntity)) ;
 		mTransaction.commit() ;
 	}
 
@@ -97,11 +96,11 @@ public class AlarmReminderEditActivity extends Activity {
 		catch(Exception e) {
 		}
 		if(mBundle != null) {
-			editFlag = mBundle.getBoolean("EditFlag") ;
+			editFlag = mBundle.getBoolean(AlarmReminderHomeActivity.BUNDLE_KEY_EDITFLAG) ;
 		}
 		if(editFlag) {
 			mAlarmReminderEntity = (AlarmReminderEntity) mBundle
-					.getSerializable("AlarmReminderEntity") ;
+					.getSerializable(AlarmReminderHomeActivity.BUNDLE_KEY_ALARMREMINDER) ;
 		}
 	}
 

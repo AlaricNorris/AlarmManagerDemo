@@ -54,6 +54,7 @@ public class AlarmReminderEditFragment extends Fragment {
 		AlarmReminderEditFragment mFragment = new AlarmReminderEditFragment() ;
 		// Bundle up all of the data needed to create the fragment
 		Bundle mBundle = new Bundle() ;
+		mBundle.putSerializable("AlarmReminderEntity" , inAlarmReminderEntity) ;
 		mFragment.setArguments(mBundle) ;
 		if(inAlarmReminderEntity == null) {
 			return ErrorInfoFragment.getInstance(mBundle) ;
@@ -86,7 +87,7 @@ public class AlarmReminderEditFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater , ViewGroup container ,
 			Bundle savedInstanceState) {
 		if(mAlarmReminderEntity == null) {
-			return inflater.inflate(R.layout.fragment_page_error , container) ;
+			return inflater.inflate(R.layout.fragment_page_error , null) ;
 		}
 		return super.onCreateView(inflater , container , savedInstanceState) ;
 	}
