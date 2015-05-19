@@ -92,10 +92,41 @@ public class AlarmReminderHomeActivity extends Activity implements
 		loadOrRefreshData() ;
 	}
 
+	private boolean isButtonEnabled ;
+
+	/**
+	 * 	disableButtons:()
+	 *  ──────────────────────────────────	
+	 *	@version	Ver 1.0	
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 * 	Modified By 	AlaricNorris		 2015-5-19下午11:06:12
+	 *	Modifications:	TODO
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
+	private void disableButtons() {
+		isButtonEnabled = false ;
+	}
+
+	/**
+	 * 	enableButtons:()
+	 *  ──────────────────────────────────	
+	 *	@version	Ver 1.0	
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 * 	Modified By 	AlaricNorris		 2015-5-19下午11:05:00
+	 *	Modifications:	TODO
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
+	private void enableButtons() {
+		isButtonEnabled = true ;
+	}
+
 	private void loadOrRefreshData() {
 		new Thread() {
 
 			public void run() {
+				disableButtons() ;
 				mSwipeLayout.setRefreshing(true) ;
 				try {
 					Thread.sleep(2000) ;
@@ -150,15 +181,20 @@ public class AlarmReminderHomeActivity extends Activity implements
 					helper.setText(R.id.text_do , item.toString()) ;
 				}
 			} ;
-			mListView.setAdapter(mAdapter) ;
+			if(mListView != null) {
+				mListView.setAdapter(mAdapter) ;
+			}
 		}
 		else {
 			mAdapter.clear() ;
 			mAdapter.addAll(inEvent.mArrayList) ;
 			mAdapter.notifyDataSetChanged() ;
 		}
-		mSwipeLayout.setRefreshing(false) ;
+		if(mSwipeLayout != null) {
+			mSwipeLayout.setRefreshing(false) ;
+		}
 		isRefreshing = false ;
+		enableButtons() ;
 	}
 
 	/**
@@ -177,7 +213,7 @@ public class AlarmReminderHomeActivity extends Activity implements
 	}
 
 	public void addReminder(View inView) {
-		if(ClickUtil.isFastDoubleClick()) {
+		if(ClickUtil.isFastDoubleClick() || ! isButtonEnabled) {
 			return ;
 		}
 		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;
@@ -209,8 +245,8 @@ public class AlarmReminderHomeActivity extends Activity implements
 	 */
 	@ Override
 	protected void onDestroy() {
-		super.onDestroy() ;
 		EventBus.getDefault().unregister(this) ;
+		super.onDestroy() ;
 	}
 
 	/**
@@ -219,7 +255,7 @@ public class AlarmReminderHomeActivity extends Activity implements
 	 */
 	@ Override
 	public void onItemClick(AdapterView< ? > parent , View view , int position , long id) {
-		if(ClickUtil.isFastDoubleClick()) {
+		if(ClickUtil.isFastDoubleClick() || ! isButtonEnabled) {
 			return ;
 		}
 		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;

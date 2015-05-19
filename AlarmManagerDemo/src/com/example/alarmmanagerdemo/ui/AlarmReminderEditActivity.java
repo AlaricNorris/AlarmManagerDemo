@@ -18,9 +18,12 @@ import android.app.FragmentTransaction ;
 import android.os.Bundle ;
 import android.view.View ;
 import android.widget.LinearLayout ;
+import android.widget.Toast ;
 import com.example.alarmmanagerdemo.ClickUtil ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
+import com.example.alarmmanagerdemo.thirdparty.niftydialog.Effectstype ;
+import com.example.alarmmanagerdemo.thirdparty.niftydialog.NiftyDialogBuilder ;
 import com.example.alarmmanagerdemo.ui.fragments.AlarmReminderEditFragment ;
 
 /**
@@ -104,9 +107,37 @@ public class AlarmReminderEditActivity extends Activity {
 		}
 	}
 
+	NiftyDialogBuilder dialogBuilder ;
+
 	public void saveReminder(View inView) {
 		if(ClickUtil.isFastDoubleClick()) {
 			return ;
 		}
+		dialogBuilder = NiftyDialogBuilder.getInstance(this) ;
+		dialogBuilder.withTitle("确认保存？") //.withTitle(null)  no title
+				.withTitleColor("#FFFFFF") //def
+				.withDividerColor("#11000000") //def
+				.withMessage("请确认开启提醒") //.withMessage(null)  no Msg
+				.withMessageColor("#FFFFFFFF") //def  | withMessageColor(int resid)
+				.withDialogColor("#FFE74C3C") //def  | withDialogColor(int resid)
+				.withIcon(getResources().getDrawable(R.drawable.ic_launcher)).withDuration(700) //def
+				.withEffect(Effectstype.Newspager) //def Effectstype.Slidetop
+				.withButton1Text("OK") //def gone
+				.withButton2Text("Cancel") //def gone
+				.isCancelableOnTouchOutside(false) //def    | isCancelable(true)
+//				.setCustomView(R.layout.custom_view , v.getContext()) //.setCustomView(View or ResId,context)
+				.setButton1Click(new View.OnClickListener() {
+
+					@ Override
+					public void onClick(View v) {
+						Toast.makeText(v.getContext() , "i'm btn1" , Toast.LENGTH_SHORT).show() ;
+					}
+				}).setButton2Click(new View.OnClickListener() {
+
+					@ Override
+					public void onClick(View v) {
+						dialogBuilder.dismiss() ;
+					}
+				}).show() ;
 	}
 }
