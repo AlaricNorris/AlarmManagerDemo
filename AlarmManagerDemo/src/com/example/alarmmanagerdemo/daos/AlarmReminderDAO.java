@@ -19,6 +19,7 @@ import com.example.alarmmanagerdemo.db.AlarmReminderDBOpenHelper ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import com.j256.ormlite.dao.Dao ;
 import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus ;
+import com.j256.ormlite.stmt.QueryBuilder ;
 
 /**
  *	ClassName:	AlarmReminderDAO
@@ -51,6 +52,18 @@ public class AlarmReminderDAO {
 		}
 	}
 
+	/**
+	 * 	createOrUpdate:()
+	 *  ──────────────────────────────────
+	 * 	@param inAlarmReminderEntity
+	 * 	@return	
+	 *	@version	Ver 1.0	
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 * 	Modified By 	20144L151		 2015-5-20上午11:17:44
+	 *	Modifications:	TODO
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
 	public boolean createOrUpdate(AlarmReminderEntity inAlarmReminderEntity) {
 		CreateOrUpdateStatus mCreateOrUpdateStatus = null ;
 		try {
@@ -88,6 +101,26 @@ public class AlarmReminderDAO {
 			e.printStackTrace() ;
 		}
 		return mResult ;
+	}
+
+	public int queryLatestId() {
+		if(queryAll() == null) {
+			return 1 ;
+		}
+		QueryBuilder<AlarmReminderEntity , Integer> mQueryBuilder = mDao.queryBuilder() ;
+		mQueryBuilder.orderBy("id" , false) ;
+		AlarmReminderEntity mResult = null ;
+		try {
+			mResult = mQueryBuilder.queryForFirst() ;
+		}
+		catch(SQLException e) {
+			e.printStackTrace() ;
+			return - 1 ;
+		}
+		if(mResult == null) {
+			return - 1 ;
+		}
+		return mResult.getId() ;
 	}
 
 	/**

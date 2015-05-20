@@ -15,8 +15,10 @@ package com.example.alarmmanagerdemo.ui ;
 import android.app.Activity ;
 import android.app.FragmentManager ;
 import android.app.FragmentTransaction ;
+import android.content.Context ;
 import android.os.Bundle ;
 import android.view.View ;
+import android.view.inputmethod.InputMethodManager ;
 import android.widget.LinearLayout ;
 import android.widget.Toast ;
 import com.example.alarmmanagerdemo.ClickUtil ;
@@ -75,7 +77,7 @@ public class AlarmReminderEditActivity extends Activity {
 		mFragmentManager = getFragmentManager() ;
 		FragmentTransaction mTransaction = mFragmentManager.beginTransaction() ;
 		mTransaction.add(R.id.frame_content ,
-				AlarmReminderEditFragment.newInstance(mAlarmReminderEntity)) ;
+				AlarmReminderEditFragment.newInstance(editFlag , mAlarmReminderEntity)) ;
 		mTransaction.commit() ;
 	}
 
@@ -139,5 +141,21 @@ public class AlarmReminderEditActivity extends Activity {
 						dialogBuilder.dismiss() ;
 					}
 				}).show() ;
+	}
+
+	public void hideInput(View inView) {
+		try {
+			InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE) ;
+			inputMethodManager.hideSoftInputFromWindow(inView.getWindowToken() , 0) ;
+		}
+		catch(Exception e) {
+		}
+	}
+
+	public void cancel(View inView) {
+		if(ClickUtil.isFastDoubleClick()) {
+			return ;
+		}
+		finish() ;
 	}
 }

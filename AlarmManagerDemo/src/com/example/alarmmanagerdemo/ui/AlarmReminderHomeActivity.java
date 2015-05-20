@@ -17,8 +17,10 @@ import android.app.Activity ;
 import android.content.Intent ;
 import android.os.Bundle ;
 import android.support.v4.widget.SwipeRefreshLayout ;
+import android.util.Log ;
 import android.view.View ;
 import android.widget.AdapterView ;
+import android.widget.Toast ;
 import android.widget.AdapterView.OnItemClickListener ;
 import android.widget.ListView ;
 import com.example.alarmmanagerdemo.ClickUtil ;
@@ -204,6 +206,11 @@ public class AlarmReminderHomeActivity extends Activity implements
 	 */
 	private boolean isRefreshing ;
 
+	/**
+	 * 	(non-Javadoc)
+	 * 	@see android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener#onRefresh()
+	 */
+	@ Override
 	public void onRefresh() {
 		if(isRefreshing) {
 			return ;
@@ -212,31 +219,26 @@ public class AlarmReminderHomeActivity extends Activity implements
 		loadOrRefreshData() ;
 	}
 
+	/**
+	 * 	addReminder:(Button click事件回调)
+	 *  ──────────────────────────────────
+	 * 	@param 		inView    
+	 * 	@throws 
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　Ver 1.0
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 *	2015-5-20	上午8:49:27	Modified By Norris 
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
 	public void addReminder(View inView) {
-		if(ClickUtil.isFastDoubleClick() || ! isButtonEnabled) {
+		if(ClickUtil.isFastDoubleClick()) {
 			return ;
+		}
+		if( ! isButtonEnabled) {
+			Toast.makeText(getApplicationContext() , "按钮暂不可点击" , 0).show() ;
 		}
 		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;
 		mIntent.putExtra("EditFlag" , false) ;
 		startActivity(mIntent) ;
-//		new Thread() {
-//
-//			public void run() {
-//				AlarmReminderEntity mAlarmReminderEntity = new AlarmReminderEntity() ;
-//				mAlarmReminderEntity.setTitle("add") ;
-//				mAlarmReminderEntity.setDescription("addTest ") ;
-//				mAlarmReminderEntity.setTimesperday(1) ;
-//				mAlarmReminderEntity.setStratdate(new Date()) ;
-//				mAlarmReminderEntity.setEnddate(new Date(2015 - 1900 , 6 - 1 , 11)) ;
-//				boolean result = new AlarmReminderDAO(getApplicationContext())
-//						.createOrUpdate(mAlarmReminderEntity) ;
-//				if(result) {
-//					loadOrRefreshData() ;
-//				}
-//				else
-//					Log.i("TestTag" , "fail") ;
-//			} ;
-//		}.start() ;
 	}
 
 	/**
@@ -255,16 +257,52 @@ public class AlarmReminderHomeActivity extends Activity implements
 	 */
 	@ Override
 	public void onItemClick(AdapterView< ? > parent , View view , int position , long id) {
-		if(ClickUtil.isFastDoubleClick() || ! isButtonEnabled) {
+		if(ClickUtil.isFastDoubleClick()) {
 			return ;
 		}
+		if( ! isButtonEnabled) {
+			Toast.makeText(getApplicationContext() , "暂不可点击请稍候。。。" , 0).show() ;
+		}
 		Intent mIntent = new Intent(getApplicationContext() , AlarmReminderEditActivity.class) ;
+		Log.i("tag" , "itemClick" + position + mAdapter.getItem(position)) ;
 		mIntent.putExtra(BUNDLE_KEY_ALARMREMINDER , mAdapter.getItem(position)) ;
 		mIntent.putExtra(BUNDLE_KEY_EDITFLAG , true) ;
 		startActivity(mIntent) ;
 	}
 
+	/**
+	 * 	Intent Bundle 的Key   
+	 * 	String			:		BUNDLE_KEY_ALARMREMINDER	
+	 * 	@since Ver 1.0
+	 */
 	public static final String BUNDLE_KEY_ALARMREMINDER = "AlarmReminder" ;
 
+	/**
+	 * 	Intent Bundle 的Key
+	 * 	String			:		BUNDLE_KEY_EDITFLAG	
+	 * 	@since Ver 1.0
+	 */
 	public static final String BUNDLE_KEY_EDITFLAG = "EditFlag" ;
+
+	public static class Event_Refresh {
+	}
+
+	/**
+	 * 	onEvent:(EventBus事件回调函数)
+	 * 	收到推送后刷新数据
+	 *  ──────────────────────────────────
+	 * 	@param 		inEvent	
+	 *	@version	Ver 1.0	
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 * 	Modified By 	20144L151		 2015-5-20上午10:44:38
+	 *	Modifications:	TODO
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
+	public void onEvent(Event_Refresh inEvent) {
+		if(isRefreshing) {
+			return ;
+		}
+		loadOrRefreshData() ;
+	}
 }

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0"
+    android:onClick="hideInput"
     android:orientation="vertical"
     android:weightSum="200" >
 
@@ -11,13 +12,21 @@
         android:layout_height="0dip"
         android:layout_weight="20"
         android:background="#18B4ED" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:onClick="cancel"
+            android:paddingRight="10dip"
+            android:text="取消" />
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/frame_content"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="170" >
+        android:layout_weight="180" >
     </FrameLayout>
 
     <FrameLayout
@@ -32,7 +41,6 @@
             android:layout_gravity="center"
             android:drawableLeft="@android:drawable/ic_input_add"
             android:drawablePadding="10dip"
-            android:onClick="saveReminder"
             android:text="设置提醒" />
     </FrameLayout>
 

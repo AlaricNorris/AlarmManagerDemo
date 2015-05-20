@@ -275,6 +275,10 @@ public class AlarmReminderEntity implements Serializable {
 		return isOn ;
 	}
 
+	public boolean isOn() {
+		return isOn == 1 ? true : false ;
+	}
+
 	/**
 	 *	isOn
 	 *	@param   isOn    the isOn to set
@@ -282,6 +286,7 @@ public class AlarmReminderEntity implements Serializable {
 	public void setIsOn(int isOn) {
 		this.isOn = isOn ;
 	}
+	
 
 	/**
 	 * 	needVibration

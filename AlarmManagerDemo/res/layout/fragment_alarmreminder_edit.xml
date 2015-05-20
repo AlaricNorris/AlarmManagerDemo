@@ -7,13 +7,183 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="180" >
+        android:weightSum="200" >
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="20" >
-        </FrameLayout>
+            android:layout_weight="20"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="Enable:"
+                android:textSize="25dip" />
+
+            <Switch
+                android:id="@+id/switch_alarm"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:switchPadding="10dip"
+                android:textOff="关闭"
+                android:textOn="开启" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="20"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="ID:"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/edit_id"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:hint="ID"
+                android:imeOptions="actionNext"
+                android:inputType="numberSigned"
+                android:textSize="25dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="20"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="Start:"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/edit_start"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:hint="startDate"
+                android:imeOptions="actionNext"
+                android:textSize="25dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="20"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="End:"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/edit_end"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:hint="endDate"
+                android:imeOptions="actionNext"
+                android:textSize="25dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="20"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="Title:"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/edit_title"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:hint="title"
+                android:imeOptions="actionNext"
+                android:textSize="25dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="20"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="Desc:"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/edit_description"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:hint="Description"
+                android:imeOptions="actionNext"
+                android:textSize="25dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="40"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="Time:"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/edit_triggerattime"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:hint="TriggerAtTime"
+                android:imeOptions="actionDone"
+                android:textSize="25dip" />
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -21,12 +191,12 @@
             android:layout_weight="25" >
 
             <Button
+                android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:drawableLeft="@android:drawable/ic_input_add"
                 android:drawablePadding="10dip"
-                android:onClick="saveReminder"
                 android:text="设置提醒" />
         </FrameLayout>
     </LinearLayout>

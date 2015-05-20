@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="18" />
 
     <instrumentation
@@ -33,7 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.alarmmanagerdemo.ui.AlarmReminderEditActivity" />
+        <activity
+            android:name="com.example.alarmmanagerdemo.ui.AlarmReminderEditActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.example.alarmmanagerdemo.ui.MainActivity" />
         <activity android:name="com.example.alarmmanagerdemo.DoSomething" />
 

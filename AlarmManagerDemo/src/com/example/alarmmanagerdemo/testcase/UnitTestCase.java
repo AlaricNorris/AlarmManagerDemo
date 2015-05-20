@@ -181,4 +181,13 @@ public class UnitTestCase extends AndroidTestCase {
 		AlarmManager manager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE) ;
 		manager.cancel(sender) ;
 	}
+	
+	public void testQueryLatestID() {
+		AlarmReminderDAO alarmReminderDAO = new AlarmReminderDAO(getContext()) ;
+		Log.i(TAG , "CorU" + alarmReminderDAO.queryLatestId()) ;
+		Log.i(TAG , "queryAll" + alarmReminderDAO.queryAll()) ;
+	
+		
+	}
+	
 }
