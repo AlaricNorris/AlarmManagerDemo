@@ -17,6 +17,7 @@ import java.text.ParseException ;
 import java.text.SimpleDateFormat ;
 import java.util.Date ;
 import com.example.alarmmanagerdemo.db.AlarmReminderDBOpenHelper ;
+import com.example.alarmmanagerdemo.utils.TimeConstants ;
 import com.j256.ormlite.field.DatabaseField ;
 import com.j256.ormlite.table.DatabaseTable ;
 
@@ -84,6 +85,15 @@ public class AlarmReminderEntity implements Serializable {
 	 */
 	@ DatabaseField ( columnName = "triggerattimes" )
 	private String TriggerAtTimes ;
+
+	/**
+	 * 	时间间隔
+	 * 	long			:		duration	
+	 * 	@since {@link AlarmReminderDBOpenHelper#DATABASE_VERSION}
+	 * 	@see {@link TimeConstants#HOUR}
+	 */
+	@ DatabaseField ( columnName = "duration" )
+	private long duration ;
 
 	/**
 	 * 	1 	on
@@ -268,6 +278,22 @@ public class AlarmReminderEntity implements Serializable {
 	}
 
 	/**
+	 * 	duration
+	 * 	@return  	the duration
+	 */
+	public long getDuration() {
+		return duration ;
+	}
+
+	/**
+	 *	duration
+	 *	@param   duration    the duration to set
+	 */
+	public void setDuration(long duration) {
+		this.duration = duration ;
+	}
+
+	/**
 	 * 	isOn
 	 * 	@return  	the isOn
 	 */
@@ -286,7 +312,6 @@ public class AlarmReminderEntity implements Serializable {
 	public void setIsOn(int isOn) {
 		this.isOn = isOn ;
 	}
-	
 
 	/**
 	 * 	needVibration
@@ -312,7 +337,8 @@ public class AlarmReminderEntity implements Serializable {
 	public String toString() {
 		return "AlarmReminderEntity [id=" + id + ", title=" + title + ", description="
 				+ description + ", stratdate=" + stratdate + ", enddate=" + enddate
-				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + TriggerAtTimes + ", isOn="
-				+ isOn + ", needVibration=" + needVibration + "]" ;
+				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + TriggerAtTimes
+				+ ", duration=" + duration + ", isOn=" + isOn + ", needVibration=" + needVibration
+				+ "]" ;
 	}
 }

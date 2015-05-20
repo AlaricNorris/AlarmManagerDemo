@@ -16,7 +16,6 @@ import java.sql.SQLException ;
 import android.content.Context ;
 import android.database.sqlite.SQLiteDatabase ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
-import com.j256.ormlite.android.apptools.OpenHelperManager ;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper ;
 import com.j256.ormlite.dao.Dao ;
 import com.j256.ormlite.support.ConnectionSource ;
@@ -48,7 +47,7 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	 * 	int			:		DATABASE_VERSION	
 	 * 	@since Ver 1.0
 	 */
-	public static final int DATABASE_VERSION = 2 ;
+	public static final int DATABASE_VERSION = 3 ;
 
 	/**
 	 * 	Creates a new instance of AlarmReminderDBOpenHelper.

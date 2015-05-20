@@ -1,23 +1,23 @@
 package com.example.alarmmanagerdemo.receivers ;
 
+import java.util.Date ;
+import android.app.AlarmManager ;
 import android.app.Notification ;
 import android.app.NotificationManager ;
 import android.app.PendingIntent ;
 import android.content.BroadcastReceiver ;
 import android.content.Context ;
 import android.content.Intent ;
-import android.net.Uri ;
 import android.os.Bundle ;
 import android.text.TextUtils ;
 import android.util.Log ;
 import android.widget.Toast ;
-import com.example.alarmmanagerdemo.CallupNotificationService ;
-import com.example.alarmmanagerdemo.DoSomething ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
-import com.example.alarmmanagerdemo.entities.NotificationEntity ;
+import com.example.alarmmanagerdemo.services.RegisAlarmReminderService ;
 import com.example.alarmmanagerdemo.testcase.UnitTestCase ;
+import com.example.alarmmanagerdemo.ui.AlarmReminderDetailActivity ;
 
 /**
  * 
@@ -61,7 +61,8 @@ public class AlarmReminderReceiver extends BroadcastReceiver {
 			Toast.makeText(context , " Bundle But No Alarm" , Toast.LENGTH_LONG).show() ;
 			return ;
 		}
-//		Intent mIntent = new Intent(context , CallupNotificationService.class) ;
+//		Intent mIntent = new Intent(context , RegisAlarmReminderService.class) ;
+//		mIntent.putExtra("ID" , ID) ;
 //		context.startService(mIntent) ;
 //		String service = Context.NOTIFICATION_SERVICE ;
 //		mNotificationManager = (NotificationManager) context.getSystemService(service) ;
@@ -105,6 +106,14 @@ public class AlarmReminderReceiver extends BroadcastReceiver {
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 */
 	private void alarm(Context context) {
+		Date date = new Date() ;
+		Log.i("tag" , "date" + date) ;
+		Log.i("tag" , mAlarmReminderEntity.toString()) ;
+		if(mAlarmReminderEntity.getStratdate().after(date)
+				|| mAlarmReminderEntity.getEnddate().before(date)) {
+			cancelAlarmReminder(context) ;
+			return ;
+		}
 		String service = Context.NOTIFICATION_SERVICE ;
 		mNotificationManager = (NotificationManager) context.getSystemService(service) ;
 		mNotification = new Notification() ;
@@ -122,20 +131,27 @@ public class AlarmReminderReceiver extends BroadcastReceiver {
 		mNotification.defaults = Notification.DEFAULT_ALL ; // 设置铃声震动
 		mNotification.defaults = Notification.DEFAULT_ALL ; // 把所有的属性设置成默认
 		// 单击通知后会跳转到NotificationResult类
-		Intent intent = new Intent(context , DoSomething.class) ;
+		Intent intent = new Intent(context , AlarmReminderDetailActivity.class) ;
 		intent.putExtra("ID" , ID) ;
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) ;
 		// 获取PendingIntent,点击时发送该Intent
 		mPendingIntent = PendingIntent.getActivity(context , ID , intent , 0) ;
 		// 设置通知的标题和内容
-		mNotification.setLatestEventInfo(
-				context ,
-				TextUtils.isEmpty(mAlarmReminderEntity.getDescription()) ? "睡 你 麻痹 起来 嗨！"
-						: mAlarmReminderEntity.getDescription() ,
-				TextUtils.isEmpty(mAlarmReminderEntity.getTitle()) ? "该吃药了！" : mAlarmReminderEntity
-						.getTitle() , mPendingIntent) ;
+		mNotification.setLatestEventInfo(context , TextUtils.isEmpty(mAlarmReminderEntity
+				.getTitle()) ? "该吃药了！" : mAlarmReminderEntity.getTitle() , TextUtils
+				.isEmpty(mAlarmReminderEntity.getDescription()) ? "睡 你 麻痹 起来 嗨！"
+				: mAlarmReminderEntity.getDescription() , mPendingIntent) ;
 		// 发出通知
 		mNotification.when = System.currentTimeMillis() ; // 设置来通知时的时间
 		mNotificationManager.notify(mAlarmReminderEntity.getId() , mNotification) ;
+	}
+
+	private void cancelAlarmReminder(Context inContext) {
+		Intent intent = new Intent(inContext , AlarmReminderReceiver.class) ;
+		intent.putExtra("ID" , mAlarmReminderEntity.getId()) ;
+		PendingIntent sender = PendingIntent.getBroadcast(inContext , mAlarmReminderEntity.getId() ,
+				intent , 0) ;
+		AlarmManager manager = (AlarmManager) inContext.getSystemService(Context.ALARM_SERVICE) ;
+		manager.cancel(sender) ;
 	}
 }

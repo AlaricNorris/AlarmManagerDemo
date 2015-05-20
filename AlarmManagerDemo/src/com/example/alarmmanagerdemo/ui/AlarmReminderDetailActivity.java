@@ -9,9 +9,14 @@
  */
 package com.example.alarmmanagerdemo.ui ;
 
+import butterknife.ButterKnife ;
+import butterknife.InjectView ;
 import com.example.alarmmanagerdemo.R ;
+import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
 import android.app.Activity ;
 import android.os.Bundle ;
+import android.util.Log ;
+import android.widget.TextView ;
 
 /**
  *	ClassName:	AlarmReminderDetailActivity
@@ -41,6 +46,20 @@ public class AlarmReminderDetailActivity extends Activity {
 	@ Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState) ;
-		setContentView(R.layout.activity_dosomething) ;
+		setContentView(R.layout.activity_alarm_reminder_detail) ;
+		Log.i("tag" , getIntent().getIntExtra( ("ID") , - 1) + "detail") ;
+		try {
+			setTitle(new AlarmReminderDAO(getApplicationContext()).queryByID(
+					getIntent().getIntExtra( ("ID") , - 1)).getTitle()) ;
+		}
+		catch(Exception e) {
+		}
+		try {
+			((TextView) findViewById(R.id.text_detail)).setText(new AlarmReminderDAO(
+					getApplicationContext()).queryByID(getIntent().getIntExtra( ("ID") , - 1))
+					.toString()) ;
+		}
+		catch(Exception e) {
+		}
 	}
 }

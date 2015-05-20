@@ -327,7 +327,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 						}
 						else {
 							dialogBuilder.dismiss() ;
-							Toast.makeText(getActivity() , "保存成功" , 0).show() ;
+							Toast.makeText(getActivity() , "保存失败" , 0).show() ;
 						}
 					}
 				}).setButton2Click(new View.OnClickListener() {

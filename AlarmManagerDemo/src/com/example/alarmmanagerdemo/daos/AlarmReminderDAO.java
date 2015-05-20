@@ -71,6 +71,7 @@ public class AlarmReminderDAO {
 		}
 		catch(SQLException e) {
 			e.printStackTrace() ;
+			return false ;
 		}
 		if(mCreateOrUpdateStatus == null) {
 			return false ;
@@ -105,7 +106,7 @@ public class AlarmReminderDAO {
 
 	public int queryLatestId() {
 		if(queryAll() == null) {
-			return 1 ;
+			return 0 ;
 		}
 		QueryBuilder<AlarmReminderEntity , Integer> mQueryBuilder = mDao.queryBuilder() ;
 		mQueryBuilder.orderBy("id" , false) ;
@@ -115,10 +116,10 @@ public class AlarmReminderDAO {
 		}
 		catch(SQLException e) {
 			e.printStackTrace() ;
-			return - 1 ;
+			return 0 ;
 		}
 		if(mResult == null) {
-			return - 1 ;
+			return 0 ;
 		}
 		return mResult.getId() ;
 	}

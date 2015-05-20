@@ -36,6 +36,7 @@
         <activity
             android:name="com.example.alarmmanagerdemo.ui.AlarmReminderEditActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name="com.example.alarmmanagerdemo.ui.AlarmReminderDetailActivity" />
         <activity android:name="com.example.alarmmanagerdemo.ui.MainActivity" />
         <activity android:name="com.example.alarmmanagerdemo.DoSomething" />
 
@@ -59,8 +60,8 @@
             -->
         </receiver>
 
-        <service android:name="com.example.alarmmanagerdemo.CallupNotificationService" >
-        </service>
+        <service android:name="com.example.alarmmanagerdemo.CallupNotificationService" />
+        <service android:name="com.example.alarmmanagerdemo.RegisAlarmReminderService" />
 
         <uses-library android:name="android.test.runner" />
     </application>
