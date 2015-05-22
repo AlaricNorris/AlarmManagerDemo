@@ -14,8 +14,6 @@ import android.widget.ImageButton ;
 import android.widget.TextView ;
 import android.widget.Toast ;
 import butterknife.ButterKnife ;
-import butterknife.InjectView ;
-import butterknife.OnClick ;
 import com.android.datetimepicker.date.DatePickerDialog ;
 import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener ;
 import com.android.datetimepicker.time.RadialPickerLayout ;
@@ -33,11 +31,9 @@ public class MainActivityTest extends Activity {
 
 	TextView mTextView_StartDateDisplay ;
 
-	@ InjectView ( R.id.btn_enddate )
 	ImageButton mButton_EndDate ;
 
-	@ OnClick ( R.id.btn_enddate )
-	public void pickEndDate() {
+	void pickEndDate() {
 		if(ClickUtil.isFastDoubleClick()) {
 			return ;
 		}
@@ -85,6 +81,7 @@ public class MainActivityTest extends Activity {
 		mCalendar_EndDate = Calendar.getInstance() ;
 		Log.i("tag" , "" + mCalendar_StartDate + "|" + mCalendar_EndDate) ;
 		ButterKnife.inject(this) ;
+		mButton_EndDate.bringToFront() ;
 		mTextView_TimeDisplay = ButterKnife.findById(this , R.id.tvTime) ;
 		mTextView_StartDateDisplay = ButterKnife.findById(this , R.id.tvDate) ;
 		mTextView_EndDateDisplay = ButterKnife.findById(this , R.id.text_enddate) ;
