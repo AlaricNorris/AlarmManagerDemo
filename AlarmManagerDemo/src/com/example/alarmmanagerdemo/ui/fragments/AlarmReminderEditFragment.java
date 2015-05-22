@@ -204,11 +204,11 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mEditText_ID.setText(new AlarmReminderDAO(getActivity()).queryLatestId() + 1 + "") ;
 		mEditText_title.setText("Auto") ;
 		mEditText_description.setText("该吃药了") ;
-		mEditText_start.setText(AlarmReminderEntity.mSimpleDateFormat_YYYYMMDD.format(new Date())
+		mEditText_start.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd.format(new Date())
 				+ "") ;
-		mEditText_end.setText(AlarmReminderEntity.mSimpleDateFormat_YYYYMMDD.format(new Date(
+		mEditText_end.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd.format(new Date(
 				TimeConstants.DAY + System.currentTimeMillis())) + "") ;
-		mEditText_triggerAtTime.setText(AlarmReminderEntity.mSimpleDateFormat_YYYYMMDD_HHMMSS
+		mEditText_triggerAtTime.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
 				.format(new Date(TimeConstants.MINUTES_SEMI + System.currentTimeMillis())) + "") ;
 	}
 
@@ -365,7 +365,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		Date tempDate = new Date(120000 + System.currentTimeMillis()) ;
 		Log.i("tag" , "tempDate:" + tempDate.toString() + "\t" + tempDate.getTime()) ;
 		try {
-			tempDate = AlarmReminderEntity.mSimpleDateFormat_YYYYMMDD_HHMMSS
+			tempDate = AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
 					.parse(mAlarmReminderEntity.getTriggerAtTimes()) ;
 		}
 		catch(ParseException e) {

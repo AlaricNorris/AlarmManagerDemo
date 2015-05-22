@@ -1,28 +1,7 @@
-/**
- * 	AlarmReminderDetailActivity.java
- * 	com.example.alarmmanagerdemo.ui
- * 	Function： 	TODO 
- *   ver     date      		author
- * 	──────────────────────────────────
- *   		 2015-5-20 		20144L151
- *	Copyright (c) 2015, TNT All Rights Reserved.
- */
 package com.example.alarmmanagerdemo.ui ;
 
 import java.util.Calendar ;
 import java.util.Date ;
-import butterknife.ButterKnife ;
-import butterknife.InjectView ;
-import butterknife.OnClick ;
-import com.android.datetimepicker.date.DatePickerDialog ;
-import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener ;
-import com.android.datetimepicker.time.RadialPickerLayout ;
-import com.android.datetimepicker.time.TimePickerDialog ;
-import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener ;
-import com.example.alarmmanagerdemo.ClickUtil ;
-import com.example.alarmmanagerdemo.R ;
-import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
-import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import android.app.Activity ;
 import android.content.Intent ;
 import android.content.SharedPreferences ;
@@ -34,27 +13,19 @@ import android.view.View.OnClickListener ;
 import android.widget.ImageButton ;
 import android.widget.TextView ;
 import android.widget.Toast ;
+import butterknife.ButterKnife ;
+import butterknife.InjectView ;
+import butterknife.OnClick ;
+import com.android.datetimepicker.date.DatePickerDialog ;
+import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener ;
+import com.android.datetimepicker.time.RadialPickerLayout ;
+import com.android.datetimepicker.time.TimePickerDialog ;
+import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener ;
+import com.example.alarmmanagerdemo.ClickUtil ;
+import com.example.alarmmanagerdemo.R ;
+import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 
-/**
- *	ClassName:	AlarmReminderDetailActivity
- *	Function: 	TODO ADD FUNCTION
- *	Reason:	 	TODO ADD REASON
- *	@author   	20144L151		
- *	@contact  	Norris.sly@gmail.com
- *	@version  	Ver 1.0
- *	@since   	I used to be a programmer like you, then I took an arrow in the knee 
- *	@Date	 	2015		2015-5-20		下午2:07:56
- *	@see 	 	
- *	──────────────────────────────────────────────────────────────────────────────────────────────────────
- *	@Fields 	
- *	──────────────────────────────────────────────────────────────────────────────────────────────────────
- *	@Methods	
- *	──────────────────────────────────────────────────────────────────────────────────────────────────────
- * 	Modified By 	20144L151		 2015-5-20下午2:07:56
- *	Modifications:	TODO
- *	──────────────────────────────────────────────────────────────────────────────────────────────────────
- */
-public class AlarmReminderDetailActivity extends Activity {
+public class MainActivityTest extends Activity {
 
 	private TextView mTextView_TimeDisplay ;
 
@@ -111,20 +82,6 @@ public class AlarmReminderDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState) ;
 		setContentView(R.layout.activity_main_test) ;
-		Log.i("tag" , getIntent().getIntExtra( ("ID") , - 1) + "detail") ;
-		try {
-			setTitle(new AlarmReminderDAO(getApplicationContext()).queryByID(
-					getIntent().getIntExtra( ("ID") , - 1)).getTitle()) ;
-		}
-		catch(Exception e) {
-		}
-		try {
-			((TextView) findViewById(R.id.text_detail)).setText(new AlarmReminderDAO(
-					getApplicationContext()).queryByID(getIntent().getIntExtra( ("ID") , - 1))
-					.toString()) ;
-		}
-		catch(Exception e) {
-		}
 		mCalendar_EndDate = Calendar.getInstance() ;
 		Log.i("tag" , "" + mCalendar_StartDate + "|" + mCalendar_EndDate) ;
 		ButterKnife.inject(this) ;
@@ -280,7 +237,7 @@ public class AlarmReminderDetailActivity extends Activity {
 	}
 
 	private void LaunchHint() {
-		Intent launchNewIntent = new Intent(this , Hint.class) ;
+		Intent launchNewIntent = new Intent(MainActivityTest.this , Hint.class) ;
 		startActivityForResult(launchNewIntent , 0) ;
 	}
 }

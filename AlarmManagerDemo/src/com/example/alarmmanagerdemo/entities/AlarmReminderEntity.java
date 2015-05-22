@@ -120,11 +120,35 @@ public class AlarmReminderEntity implements Serializable {
 	@ DatabaseField ( columnName = "needvibration" )
 	private int needVibration ;
 
-	public static final SimpleDateFormat mSimpleDateFormat_YYYYMMDD_HHMMSS = new SimpleDateFormat(
+	/**
+	 * 	日期格式化工具   yyyy-MM-dd HH:mm:ss
+	 * 	SimpleDateFormat			:		mSimpleDateFormat_yyyyMMdd_HHmmss	
+	 * 	@since Ver 1.0
+	 */
+	public static final SimpleDateFormat mSimpleDateFormat_yyyyMMdd_HHmmss = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss") ;
 
-	public static final SimpleDateFormat mSimpleDateFormat_YYYYMMDD = new SimpleDateFormat(
+	/**
+	 * 	日期格式化工具   yyyy-MM-dd 
+	 * 	SimpleDateFormat			:		mSimpleDateFormat_yyyyMMdd	
+	 * 	@since Ver 1.0
+	 */
+	public static final SimpleDateFormat mSimpleDateFormat_yyyyMMdd = new SimpleDateFormat(
 			"yyyy-MM-dd") ;
+
+	/**
+	 * 	日期格式化工具   HH:mm:ss
+	 * 	SimpleDateFormat			:		mSimpleDateFormat_HHmmss	
+	 * 	@since Ver 1.0
+	 */
+	public static final SimpleDateFormat mSimpleDateFormat_HHmmss = new SimpleDateFormat("HH:mm:ss") ;
+
+	/**
+	 * 	日期格式化工具   HH:mm
+	 * 	SimpleDateFormat			:		mSimpleDateFormat_HHmm	
+	 * 	@since Ver 1.0
+	 */
+	public static final SimpleDateFormat mSimpleDateFormat_HHmm = new SimpleDateFormat("HH:mm") ;
 
 	/**
 	 * 	Creates a new instance of AlarmReminderEntity.
@@ -192,7 +216,7 @@ public class AlarmReminderEntity implements Serializable {
 	public Date getStratdate() {
 		Date mEndDate = null ;
 		try {
-			mEndDate = mSimpleDateFormat_YYYYMMDD.parse(stratdate) ;
+			mEndDate = mSimpleDateFormat_yyyyMMdd.parse(stratdate) ;
 		}
 		catch(ParseException e) {
 			// TODO Auto-generated catch block
@@ -210,7 +234,7 @@ public class AlarmReminderEntity implements Serializable {
 	}
 
 	public void setStratdate(Date inDate) {
-		this.stratdate = mSimpleDateFormat_YYYYMMDD.format(inDate) ;
+		this.stratdate = mSimpleDateFormat_yyyyMMdd.format(inDate) ;
 	}
 
 	/**
@@ -224,7 +248,7 @@ public class AlarmReminderEntity implements Serializable {
 	public Date getEnddate() {
 		Date mEndDate = null ;
 		try {
-			mEndDate = mSimpleDateFormat_YYYYMMDD.parse(enddate) ;
+			mEndDate = mSimpleDateFormat_yyyyMMdd.parse(enddate) ;
 		}
 		catch(ParseException e) {
 			// TODO Auto-generated catch block
@@ -242,7 +266,7 @@ public class AlarmReminderEntity implements Serializable {
 	}
 
 	public void setEnddate(Date inDate) {
-		this.enddate = mSimpleDateFormat_YYYYMMDD.format(inDate) ;
+		this.enddate = mSimpleDateFormat_yyyyMMdd.format(inDate) ;
 	}
 
 	/**

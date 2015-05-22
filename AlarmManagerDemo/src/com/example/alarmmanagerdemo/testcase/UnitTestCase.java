@@ -76,7 +76,7 @@ public class UnitTestCase extends AndroidTestCase {
 		mAlarmReminderEntity.setStratdate(new Date()) ;
 		mAlarmReminderEntity.setEnddate(new Date(2 * 86400000 + System.currentTimeMillis())) ;
 		mAlarmReminderEntity
-				.setTriggerAtTimes(AlarmReminderEntity.mSimpleDateFormat_YYYYMMDD_HHMMSS
+				.setTriggerAtTimes(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
 						.format(new Date(10000 + System.currentTimeMillis()))) ;
 		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_TRUE) ;
 		mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
@@ -119,7 +119,7 @@ public class UnitTestCase extends AndroidTestCase {
 		Date tempDate = new Date(120000 + System.currentTimeMillis()) ;
 		Log.i(TAG , "tempDate:" + tempDate.toString() + "\t" + tempDate.getTime()) ;
 		try {
-			tempDate = AlarmReminderEntity.mSimpleDateFormat_YYYYMMDD_HHMMSS
+			tempDate = AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
 					.parse(mAlarmReminderEntity.getTriggerAtTimes()) ;
 		}
 		catch(ParseException e) {
@@ -151,7 +151,7 @@ public class UnitTestCase extends AndroidTestCase {
 		mAlarmReminderEntity.setStratdate(new Date()) ;
 		mAlarmReminderEntity.setEnddate(new Date(86400000 + System.currentTimeMillis())) ;
 		mAlarmReminderEntity
-				.setTriggerAtTimes(AlarmReminderEntity.mSimpleDateFormat_YYYYMMDD_HHMMSS
+				.setTriggerAtTimes(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
 						.format(new Date(5000 + System.currentTimeMillis()))) ;
 		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_TRUE) ;
 		mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
