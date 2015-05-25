@@ -51,15 +51,6 @@ public class DBVersionCodeProcessor extends AbstractProcessor {
 				DatabaseVersionCode methodInfo = element.getAnnotation(DatabaseVersionCode.class) ;
 //				map.put(element.getEnclosingElement().toString() , methodInfo.Version()) ;
 			}
-			Class< ? > class1 = DBVersionCodeProcessor.class ;
-			Field mfield = null ;
-			try {
-				mfield = class1.getField("") ;
-			}
-			catch(NoSuchFieldException e) {
-				e.printStackTrace() ;
-			}
-			mfield.setAccessible(true) ;
 		}
 		return false ;
 	}
