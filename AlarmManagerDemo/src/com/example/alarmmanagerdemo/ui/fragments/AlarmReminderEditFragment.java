@@ -331,7 +331,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 				.withDialogColor("#FFE74C3C")
 				//def  | withDialogColor(int resid)
 				.withIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert))
-				.withDuration(700) //def
+				.withDuration(400) //def
 				.withEffect(Effectstype.Newspager) //def Effectstype.Slidetop
 				.withButton1Text("确认") //def gone
 				.withButton2Text("取消") //def gone
