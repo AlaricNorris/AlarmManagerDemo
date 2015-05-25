@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:divider="?android:attr/dividerHorizontal"
         android:orientation="vertical"
-        android:showDividers="end|middle" >
+        android:showDividers="beginning|end|middle" >
 
         <LinearLayout
             android:id="@+id/dateLine"

@@ -194,4 +194,18 @@ public class AlarmReminderDAO {
 		}
 		return false ;
 	}
+
+	public boolean deleteByEntity(AlarmReminderEntity inEntity) {
+		int result = - 1 ;
+		try {
+			result = mDao.delete(inEntity) ;
+		}
+		catch(SQLException e) {
+			e.printStackTrace() ;
+		}
+		if(result > 0) {
+			return true ;
+		}
+		return false ;
+	}
 }

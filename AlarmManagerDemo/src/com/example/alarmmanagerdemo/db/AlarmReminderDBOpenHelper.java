@@ -47,7 +47,11 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	 * 	int			:		DATABASE_VERSION	
 	 * 	@since Ver 1.0
 	 */
-	public static final int DATABASE_VERSION = 3 ;
+	public static final int DATABASE_VERSION = 1 ;
+
+	static long millis = System.currentTimeMillis() ;
+
+	static int version = Integer.MAX_VALUE - Math.abs(Integer.MAX_VALUE + (int) millis) ;
 
 	/**
 	 * 	Creates a new instance of AlarmReminderDBOpenHelper.
@@ -57,7 +61,11 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	 * 	@param databaseVersion
 	 */
 	public AlarmReminderDBOpenHelper(Context context) {
-		super(context , TABLE_NAME , null , DATABASE_VERSION) ;
+		// FIXME When Release 
+//		super(context , TABLE_NAME , null , DATABASE_VERSION) ;
+		super(context , TABLE_NAME , null , version) ;
+		logger.info("millis" + millis) ;
+		logger.info("version" + version) ;
 	}
 
 	/**

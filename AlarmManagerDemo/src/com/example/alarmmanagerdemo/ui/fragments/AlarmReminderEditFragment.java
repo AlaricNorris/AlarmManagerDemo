@@ -13,6 +13,7 @@
 package com.example.alarmmanagerdemo.ui.fragments ;
 
 import java.text.ParseException ;
+import java.util.Calendar ;
 import java.util.Date ;
 import android.app.AlarmManager ;
 import android.app.Fragment ;
@@ -27,11 +28,16 @@ import android.view.View.OnClickListener ;
 import android.view.ViewGroup ;
 import android.widget.Button ;
 import android.widget.EditText ;
+import android.widget.ImageButton ;
 import android.widget.Switch ;
+import android.widget.TextView ;
 import android.widget.Toast ;
 import butterknife.ButterKnife ;
-import butterknife.InjectView ;
-import butterknife.InjectViews ;
+import com.android.datetimepicker.date.DatePickerDialog ;
+import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener ;
+import com.android.datetimepicker.time.RadialPickerLayout ;
+import com.android.datetimepicker.time.TimePickerDialog ;
+import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener ;
 import com.example.alarmmanagerdemo.ClickUtil ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
@@ -45,8 +51,7 @@ import de.greenrobot.event.EventBus ;
 
 /**
  *	ClassName:	AlarmReminderEditFragment
- *	Function: 	TODO ADD FUNCTION
- *	Reason:	 	TODO ADD REASON
+ *	Function: 	编辑提醒界面
  *	@author   	Norris		Norris.sly@gmail.com
  *	@version  	
  *	@since   	Ver 1.0		I used to be a programmer like you, then I took an arrow in the knee 
@@ -92,6 +97,11 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 
 	private AlarmReminderEntity mAlarmReminderEntity ;
 
+	/**
+	 * 	编辑模式标记
+	 * 	boolean			:		editFlag	
+	 * 	@since Ver 1.0
+	 */
 	private boolean editFlag ;
 
 	/**
@@ -101,11 +111,12 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 	@ Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState) ;
-		extractBundle() ;
+		extractBundleData() ;
+		parseDateTime() ;
 	}
 
 	/**
-	 * 	extractBundle:()
+	 * 	extractBundleData:()
 	 *  ──────────────────────────────────    
 	 * 	@throws 
 	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　Ver 1.0
@@ -113,7 +124,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 	 *	2015-5-20	上午9:10:36	Modified By Norris 
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 */
-	private void extractBundle() {
+	private void extractBundleData() {
 		try {
 			mAlarmReminderEntity = (AlarmReminderEntity) getArguments().getSerializable(
 					AlarmReminderHomeActivity.BUNDLE_KEY_ALARMREMINDER) ;
@@ -148,12 +159,12 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		return mContentView ;
 	}
 
-//	@ InjectViews ( { R.id.edit_id , R.id.edit_title , R.id.edit_description , R.id.edit_start ,
-//			R.id.edit_end , R.id.edit_triggerattime } )
-	EditText mEditText_ID , mEditText_title , mEditText_description , mEditText_start ,
-			mEditText_end , mEditText_triggerAtTime ;
+	EditText mEditText_ID , mEditText_title , mEditText_description
+//	, 
+//	mEditText_start ,
+//			mEditText_end , mEditText_triggerAtTime 
+			;
 
-//	@ InjectView ( R.id.switch_alarm )
 	Switch mSwitch ;
 
 	Button mButton ;
@@ -175,10 +186,23 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mEditText_ID = ButterKnife.findById(mContentView , R.id.edit_id) ;
 		mEditText_title = ButterKnife.findById(mContentView , R.id.edit_title) ;
 		mEditText_description = ButterKnife.findById(mContentView , R.id.edit_description) ;
-		mEditText_start = ButterKnife.findById(mContentView , R.id.edit_start) ;
-		mEditText_end = ButterKnife.findById(mContentView , R.id.edit_end) ;
-		mEditText_triggerAtTime = ButterKnife.findById(mContentView , R.id.edit_triggerattime) ;
 		mButton.setOnClickListener(this) ;
+		//************************************************
+		mTextView_StartDateDisplay = ButterKnife.findById(mContentView , R.id.tvDate) ;
+		mTextView_EndDateDisplay = ButterKnife.findById(mContentView , R.id.text_enddate) ;
+		mTextView_TimeDisplay = ButterKnife.findById(mContentView , R.id.tvTime) ;
+		mButton_StartDate = ButterKnife.findById(mContentView , R.id.btnChangeDate) ;
+		mButton_EndDate = ButterKnife.findById(mContentView , R.id.btn_enddate) ;
+		mButton_Time = ButterKnife.findById(mContentView , R.id.btnChangeTime) ;
+		mButton_StartDate.setOnClickListener(this) ;
+		mButton_EndDate.setOnClickListener(this) ;
+		mButton_Time.setOnClickListener(this) ;
+		mTextView_StartDateDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd
+				.format(mDate_Start)) ;
+		mTextView_EndDateDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd
+				.format(mDate_End)) ;
+		mTextView_TimeDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_HHmmss
+				.format(mDate_TriggerAtTime)) ;
 		if(editFlag) {
 			if(mAlarmReminderEntity != null) {
 				fillContentView() ;
@@ -204,12 +228,6 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mEditText_ID.setText(new AlarmReminderDAO(getActivity()).queryLatestId() + 1 + "") ;
 		mEditText_title.setText("Auto") ;
 		mEditText_description.setText("该吃药了") ;
-		mEditText_start.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd.format(new Date())
-				+ "") ;
-		mEditText_end.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd.format(new Date(
-				TimeConstants.DAY + System.currentTimeMillis())) + "") ;
-		mEditText_triggerAtTime.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
-				.format(new Date(TimeConstants.MINUTES_SEMI + System.currentTimeMillis())) + "") ;
 	}
 
 	/**
@@ -226,9 +244,6 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mEditText_ID.setText(mAlarmReminderEntity.getId() + "") ;
 		mEditText_title.setText(mAlarmReminderEntity.getTitle() + "") ;
 		mEditText_description.setText(mAlarmReminderEntity.getDescription() + "") ;
-		mEditText_start.setText(mAlarmReminderEntity.getStratdateString() + "") ;
-		mEditText_end.setText(mAlarmReminderEntity.getEnddateString() + "") ;
-		mEditText_triggerAtTime.setText(mAlarmReminderEntity.getTriggerAtTimes() + "") ;
 	}
 
 	private boolean saveAlarmReminder() {
@@ -237,10 +252,9 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 			mAlarmReminderEntity.setTitle(mEditText_title.getText().toString().trim()) ;
 			mAlarmReminderEntity.setDescription(mEditText_description.getText().toString().trim()) ;
 			mAlarmReminderEntity.setTimesperday(1) ;
-			mAlarmReminderEntity.setStratdate(mEditText_start.getText().toString().trim()) ;
-			mAlarmReminderEntity.setEnddate(mEditText_end.getText().toString().trim()) ;
-			mAlarmReminderEntity.setTriggerAtTimes(mEditText_triggerAtTime.getText().toString()
-					.trim()) ;
+			mAlarmReminderEntity.setStratdate(mDate_Start) ;
+			mAlarmReminderEntity.setEnddate(mDate_End) ;
+			mAlarmReminderEntity.setTriggerAtTime(mDate_TriggerAtTime) ;
 			mAlarmReminderEntity.setIsOn(mSwitch.isChecked() ? AlarmReminderEntity.FLAG_TRUE
 					: AlarmReminderEntity.FLAG_FALSE) ;
 			mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
@@ -251,10 +265,9 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 			mAlarmReminderEntity.setTitle(mEditText_title.getText().toString().trim()) ;
 			mAlarmReminderEntity.setDescription(mEditText_description.getText().toString().trim()) ;
 			mAlarmReminderEntity.setTimesperday(1) ;
-			mAlarmReminderEntity.setStratdate(mEditText_start.getText().toString().trim()) ;
-			mAlarmReminderEntity.setEnddate(mEditText_end.getText().toString().trim()) ;
-			mAlarmReminderEntity.setTriggerAtTimes(mEditText_triggerAtTime.getText().toString()
-					.trim()) ;
+			mAlarmReminderEntity.setStratdate(mDate_Start) ;
+			mAlarmReminderEntity.setEnddate(mDate_End) ;
+			mAlarmReminderEntity.setTriggerAtTime(mDate_TriggerAtTime) ;
 			mAlarmReminderEntity.setIsOn(mSwitch.isChecked() ? AlarmReminderEntity.FLAG_TRUE
 					: AlarmReminderEntity.FLAG_FALSE) ;
 			mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
@@ -273,15 +286,26 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 			case R.id.btn_save :
 				popupConfirmDialog() ;
 				break ;
+			case R.id.btnChangeDate :
+				mDatePickerDialog_Start.setYearRange(mCalendar_StartDate.get(Calendar.YEAR) , 2030) ;
+				mDatePickerDialog_Start.show(getFragmentManager() , "START_DATE") ;
+				break ;
+			case R.id.btn_enddate :
+				mDatePickerDialog_End.setYearRange(mCalendar_StartDate.get(Calendar.YEAR) , 2030) ;
+				mDatePickerDialog_End.show(getFragmentManager() , "END_DATE") ;
+				break ;
+			case R.id.btnChangeTime :
+				mTimePickerDialog.show(getFragmentManager() , "TIME") ;
+				break ;
 			default :
 				break ;
 		}
 	}
 
-	NiftyDialogBuilder dialogBuilder ;
+	NiftyDialogBuilder mDialog_Confirm ;
 
 	/**
-	 * 	popupConfirmDialog:()
+	 * 	popupConfirmDialog:(保存事件回调)
 	 *  ──────────────────────────────────    
 	 * 	@throws 
 	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　Ver 1.0
@@ -293,8 +317,8 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		if(ClickUtil.isFastDoubleClick()) {
 			return ;
 		}
-		dialogBuilder = NiftyDialogBuilder.getInstance(getActivity()) ;
-		dialogBuilder.withTitle("确认保存？")
+		mDialog_Confirm = NiftyDialogBuilder.getInstance(getActivity()) ;
+		mDialog_Confirm.withTitle("确认保存？")
 				//.withTitle(null)  no title
 				.withTitleColor("#FFFFFF")
 				//def
@@ -319,14 +343,14 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 					public void onClick(View v) {
 						if(saveAlarmReminder()) {
 							setupAlarmReminder() ;
-							dialogBuilder.dismiss() ;
+							mDialog_Confirm.dismiss() ;
 							Toast.makeText(getActivity() , "保存成功" , 0).show() ;
 							getActivity().finish() ;
 							EventBus.getDefault().post(
 									new AlarmReminderHomeActivity.Event_Refresh()) ;
 						}
 						else {
-							dialogBuilder.dismiss() ;
+							mDialog_Confirm.dismiss() ;
 							Toast.makeText(getActivity() , "保存失败" , 0).show() ;
 						}
 					}
@@ -334,7 +358,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 
 					@ Override
 					public void onClick(View v) {
-						dialogBuilder.dismiss() ;
+						mDialog_Confirm.dismiss() ;
 					}
 				}).show() ;
 	}
@@ -362,19 +386,23 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		AlarmManager manager = (AlarmManager) getActivity().getApplicationContext()
 				.getSystemService(Context.ALARM_SERVICE) ;
 		Log.i("tag" , "currentTimeMillis:" + System.currentTimeMillis()) ;
-		Date tempDate = new Date(120000 + System.currentTimeMillis()) ;
+		Date tempDate = new Date(TimeConstants.MINUTES_2 + System.currentTimeMillis()) ;
 		Log.i("tag" , "tempDate:" + tempDate.toString() + "\t" + tempDate.getTime()) ;
+		Date mDate_YMD = new Date() ;
 		try {
-			tempDate = AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
-					.parse(mAlarmReminderEntity.getTriggerAtTimes()) ;
+			tempDate = mAlarmReminderEntity.getTriggerAtTime() ;
+			long milliseconds = mDate_YMD.getTime() / TimeConstants.DAY * TimeConstants.DAY
+					+ tempDate.getTime() % TimeConstants.DAY ;
+			Log.i("tag" , "milliseconds:" + tempDate) ;
+			tempDate = new Date(milliseconds) ;
 		}
-		catch(ParseException e) {
+		catch(Exception e) {
 			e.printStackTrace() ;
 		}
 		Log.i("tag" , "tempDate:" + tempDate.toString() + "\t" + tempDate.getTime()) ;
 //		manager.set(AlarmManager.RTC_WAKEUP , tempDate.getTime() , sender) ;
 		manager.setRepeating(AlarmManager.RTC_WAKEUP , tempDate.getTime() ,
-				TimeConstants.MINUTES_SEMI , sender) ;
+				TimeConstants.MINUTES_5 , sender) ;
 	}
 
 	/**
@@ -396,5 +424,169 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		AlarmManager manager = (AlarmManager) getActivity().getApplicationContext()
 				.getSystemService(Context.ALARM_SERVICE) ;
 		manager.cancel(sender) ;
+	}
+
+	//***************以下为日期时间相关设置开始*****************************
+	/**
+	 * *************************************************
+	 */
+	/**
+	 * 	显示时间
+	 * 	TextView			:		mTextView_TimeDisplay	
+	 * 	@since Ver 1.0
+	 */
+	private TextView mTextView_TimeDisplay ;
+
+	/**
+	 * 	开始日期
+	 * 	TextView			:		mTextView_StartDateDisplay	
+	 * 	@since Ver 1.0
+	 */
+	private TextView mTextView_StartDateDisplay ;
+
+	/**
+	 * 	结束日期
+	 * 	TextView			:		mTextView_EndDateDisplay	
+	 * 	@since Ver 1.0
+	 */
+	private TextView mTextView_EndDateDisplay ;
+
+	/**
+	 * 	选择结束日期
+	 * 	ImageButton			:		mButton_EndDate	
+	 * 	@since Ver 1.0
+	 */
+	private ImageButton mButton_StartDate ;
+
+	/**
+	 * 	选择结束日期
+	 * 	ImageButton			:		mButton_EndDate	
+	 * 	@since Ver 1.0
+	 */
+	private ImageButton mButton_EndDate ;
+
+	/**
+	 * 	选择提醒时间
+	 * 	ImageButton			:		mButton_Time	
+	 * 	@since Ver 1.0
+	 */
+	private ImageButton mButton_Time ;
+
+	/**
+	 * 	开始日期依赖的日历对象
+	 * 	Calendar			:		mCalendar_StartDate	
+	 * 	@since Ver 1.0
+	 */
+	private Calendar mCalendar_StartDate ;
+
+	private Date mDate_Start ;
+
+	/**
+	 * 	开始日期依赖的日历对象
+	 * 	Calendar			:		mCalendar_EndDate	
+	 * 	@since Ver 1.0
+	 */
+	private Calendar mCalendar_EndDate ;
+
+	private Date mDate_End ;
+
+	/**
+	 * 	提醒时间
+	 * 	Date			:		mDate_TriggerAtTime	
+	 * 	@since Ver 1.0
+	 */
+	private Date mDate_TriggerAtTime ;
+
+	private DatePickerDialog mDatePickerDialog_Start ;
+
+	private DatePickerDialog mDatePickerDialog_End ;
+
+	private TimePickerDialog mTimePickerDialog ;
+
+	/**
+	 * 	parseDateTime:(解析日期时间操作)
+	 *  ──────────────────────────────────	
+	 *	@version	Ver 1.0	
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 * 	Modified By 	20144L151		 2015-5-25上午8:54:09
+	 *	Modifications:	
+	 *	|——若为编辑模式		从实体类中解析提醒的日期时间
+	 *	|——若非编辑模式		取当前时间解析提醒的日期时间
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
+	private void parseDateTime() {
+		mCalendar_StartDate = Calendar.getInstance() ;
+		mCalendar_EndDate = Calendar.getInstance() ;
+		if(editFlag) {
+			// 解析实体的日期
+			mDate_Start = mAlarmReminderEntity.getStratdate() ;
+			mDate_End = mAlarmReminderEntity.getEnddate() ;
+			mCalendar_StartDate.setTime(mDate_Start) ;
+			mCalendar_EndDate.setTime(mDate_End) ;
+			mDate_TriggerAtTime = mAlarmReminderEntity.getTriggerAtTime() ;
+		}
+		else {
+			// 自动生成日期
+			mCalendar_StartDate.add(Calendar.MINUTE , 1) ;
+			mCalendar_StartDate.set(Calendar.SECOND , 0) ;
+			mDate_Start = mCalendar_StartDate.getTime() ;
+			mCalendar_EndDate.add(Calendar.DATE , 1) ;
+			mDate_End = mCalendar_EndDate.getTime() ;
+			try {
+				mDate_TriggerAtTime = AlarmReminderEntity.mSimpleDateFormat_HHmmss
+						.parse(AlarmReminderEntity.mSimpleDateFormat_HHmmss.format(mDate_Start)) ;
+			}
+			catch(ParseException e) {
+				mDate_TriggerAtTime = mDate_Start ;
+				e.printStackTrace() ;
+			}
+		}
+		Log.i("tag" , "Calender" + mCalendar_StartDate + "|" + mCalendar_EndDate) ;
+		Log.i("tag" , "Date" + mDate_Start + "|" + mDate_End) ;
+		mTimePickerDialog = TimePickerDialog.newInstance(new OnTimeSetListener() {
+
+			@ Override
+			public void onTimeSet(RadialPickerLayout view , int hourOfDay , int minute) {
+				mDate_TriggerAtTime.setHours(hourOfDay) ;
+				mDate_TriggerAtTime.setMinutes(minute) ;
+				mTextView_TimeDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_HHmmss
+						.format(mDate_TriggerAtTime)) ;
+				mTextView_TimeDisplay.setTextColor(getResources().getColor(
+						android.R.color.holo_blue_light)) ;
+			}
+		} , mCalendar_StartDate.get(Calendar.HOUR_OF_DAY) , mCalendar_StartDate
+				.get(Calendar.MINUTE) , true) ;
+		mDatePickerDialog_Start = DatePickerDialog.newInstance(
+				new OnDateSetListener() {
+
+					public void onDateSet(DatePickerDialog datePickerDialog , int year , int month ,
+							int day) {
+						mCalendar_StartDate.set(year , month , day) ;
+						mDate_Start = mCalendar_StartDate.getTime() ;
+						mTextView_StartDateDisplay
+								.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd
+										.format(mDate_Start)) ;
+						mTextView_StartDateDisplay.setTextColor(getResources().getColor(
+								android.R.color.holo_blue_light)) ;
+					}
+				} , mCalendar_StartDate.get(Calendar.YEAR) , mCalendar_StartDate
+						.get(Calendar.MONTH) ,
+				mCalendar_StartDate.get(Calendar.DAY_OF_MONTH)) ;
+		mDatePickerDialog_End = DatePickerDialog.newInstance(
+				new OnDateSetListener() {
+
+					public void onDateSet(DatePickerDialog datePickerDialog , int year , int month ,
+							int day) {
+						mCalendar_EndDate.set(year , month , day) ;
+						mDate_End = mCalendar_EndDate.getTime() ;
+						mTextView_EndDateDisplay
+								.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd
+										.format(mDate_End)) ;
+						mTextView_EndDateDisplay.setTextColor(getResources().getColor(
+								android.R.color.holo_blue_light)) ;
+					}
+				} , mCalendar_EndDate.get(Calendar.YEAR) , mCalendar_EndDate.get(Calendar.MONTH) ,
+				mCalendar_EndDate.get(Calendar.DAY_OF_MONTH)) ;
 	}
 }

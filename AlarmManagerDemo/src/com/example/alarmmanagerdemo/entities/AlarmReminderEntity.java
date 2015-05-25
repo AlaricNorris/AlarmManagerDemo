@@ -80,11 +80,11 @@ public class AlarmReminderEntity implements Serializable {
 	/**
 	 * 	在何时触发
 	 * 	使用Json存储
-	 * 	String			:		TriggerAtTimes	
+	 * 	String			:		triggerAtTime	
 	 * 	@since {@link AlarmReminderDBOpenHelper#DATABASE_VERSION}
 	 */
 	@ DatabaseField ( columnName = "triggerattimes" )
-	private String TriggerAtTimes ;
+	private String triggerAtTime ;
 
 	/**
 	 * 	时间间隔
@@ -219,7 +219,6 @@ public class AlarmReminderEntity implements Serializable {
 			mEndDate = mSimpleDateFormat_yyyyMMdd.parse(stratdate) ;
 		}
 		catch(ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace() ;
 		}
 		return mEndDate ;
@@ -251,7 +250,6 @@ public class AlarmReminderEntity implements Serializable {
 			mEndDate = mSimpleDateFormat_yyyyMMdd.parse(enddate) ;
 		}
 		catch(ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace() ;
 		}
 		return mEndDate ;
@@ -286,19 +284,34 @@ public class AlarmReminderEntity implements Serializable {
 	}
 
 	/**
-	 * 	triggerAtTimes
-	 * 	@return  	the triggerAtTimes
+	 * 	triggerAtTime
+	 * 	@return  	the triggerAtTime
 	 */
-	public String getTriggerAtTimes() {
-		return TriggerAtTimes ;
+	public String getTriggerAtTimeString() {
+		return triggerAtTime ;
+	}
+
+	public Date getTriggerAtTime() {
+		Date mDate = null ;
+		try {
+			mDate = mSimpleDateFormat_HHmmss.parse(triggerAtTime) ;
+		}
+		catch(ParseException e) {
+			e.printStackTrace() ;
+		}
+		return mDate ;
 	}
 
 	/**
-	 *	triggerAtTimes
-	 *	@param   triggerAtTimes    the triggerAtTimes to set
+	 *	triggerAtTime
+	 *	@param   triggerAtTime    the triggerAtTimes to set
 	 */
-	public void setTriggerAtTimes(String triggerAtTimes) {
-		TriggerAtTimes = triggerAtTimes ;
+	public void setTriggerAtTime(String triggerAtTime) {
+		this.triggerAtTime = triggerAtTime ;
+	}
+
+	public void setTriggerAtTime(Date inDate) {
+		this.triggerAtTime = mSimpleDateFormat_HHmmss.format(inDate) ;
 	}
 
 	/**
@@ -361,7 +374,7 @@ public class AlarmReminderEntity implements Serializable {
 	public String toString() {
 		return "AlarmReminderEntity [id=" + id + ", title=" + title + ", description="
 				+ description + ", stratdate=" + stratdate + ", enddate=" + enddate
-				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + TriggerAtTimes
+				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + triggerAtTime
 				+ ", duration=" + duration + ", isOn=" + isOn + ", needVibration=" + needVibration
 				+ "]" ;
 	}

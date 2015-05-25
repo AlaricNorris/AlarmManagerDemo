@@ -75,9 +75,8 @@ public class UnitTestCase extends AndroidTestCase {
 		mAlarmReminderEntity.setTimesperday(2) ;
 		mAlarmReminderEntity.setStratdate(new Date()) ;
 		mAlarmReminderEntity.setEnddate(new Date(2 * 86400000 + System.currentTimeMillis())) ;
-		mAlarmReminderEntity
-				.setTriggerAtTimes(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
-						.format(new Date(10000 + System.currentTimeMillis()))) ;
+		mAlarmReminderEntity.setTriggerAtTime(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
+				.format(new Date(10000 + System.currentTimeMillis()))) ;
 		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_TRUE) ;
 		mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
 		return mAlarmReminderEntity ;
@@ -119,10 +118,9 @@ public class UnitTestCase extends AndroidTestCase {
 		Date tempDate = new Date(120000 + System.currentTimeMillis()) ;
 		Log.i(TAG , "tempDate:" + tempDate.toString() + "\t" + tempDate.getTime()) ;
 		try {
-			tempDate = AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
-					.parse(mAlarmReminderEntity.getTriggerAtTimes()) ;
+			tempDate = mAlarmReminderEntity.getTriggerAtTime() ;
 		}
-		catch(ParseException e) {
+		catch(Exception e) {
 			e.printStackTrace() ;
 		}
 		Log.i(TAG , "tempDate:" + tempDate.toString() + "\t" + tempDate.getTime()) ;
@@ -150,9 +148,8 @@ public class UnitTestCase extends AndroidTestCase {
 		mAlarmReminderEntity.setTimesperday(1) ;
 		mAlarmReminderEntity.setStratdate(new Date()) ;
 		mAlarmReminderEntity.setEnddate(new Date(86400000 + System.currentTimeMillis())) ;
-		mAlarmReminderEntity
-				.setTriggerAtTimes(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
-						.format(new Date(5000 + System.currentTimeMillis()))) ;
+		mAlarmReminderEntity.setTriggerAtTime(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
+				.format(new Date(5000 + System.currentTimeMillis()))) ;
 		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_TRUE) ;
 		mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
 		return mAlarmReminderEntity ;
@@ -181,13 +178,10 @@ public class UnitTestCase extends AndroidTestCase {
 		AlarmManager manager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE) ;
 		manager.cancel(sender) ;
 	}
-	
+
 	public void testQueryLatestID() {
 		AlarmReminderDAO alarmReminderDAO = new AlarmReminderDAO(getContext()) ;
 		Log.i(TAG , "CorU" + alarmReminderDAO.queryLatestId()) ;
 		Log.i(TAG , "queryAll" + alarmReminderDAO.queryAll()) ;
-	
-		
 	}
-	
 }
