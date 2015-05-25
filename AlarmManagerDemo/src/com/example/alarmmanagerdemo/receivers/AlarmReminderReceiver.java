@@ -15,7 +15,6 @@ import android.widget.Toast ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
-import com.example.alarmmanagerdemo.services.RegisAlarmReminderService ;
 import com.example.alarmmanagerdemo.testcase.UnitTestCase ;
 import com.example.alarmmanagerdemo.ui.AlarmReminderDetailActivity ;
 
@@ -35,12 +34,12 @@ public class AlarmReminderReceiver extends BroadcastReceiver {
 
 	private AlarmReminderEntity mAlarmReminderEntity ;
 
-	public static final int INTERVAL_DAY = 1000 * 60 * 60 * 24 ;// 24h
-
 //	private String mString_NotificationTitle , mString_SubTitle , mString_Content ;
 //
 //	private int mLong_NotificationID ;
 	private PendingIntent mPendingIntent ;
+
+	public static final String BUNDLE_KEY_ID = "ID" ;
 
 	Bundle mBundle ;
 
@@ -53,12 +52,14 @@ public class AlarmReminderReceiver extends BroadcastReceiver {
 		if(mBundle == null) {
 			return ;
 		}
-		ID = mBundle.getInt("ID") ;
-		Log.i(UnitTestCase.TAG , "ID" + ID) ;
+		ID = mBundle.getInt(BUNDLE_KEY_ID) ;
+		Log.i(UnitTestCase.TAG , BUNDLE_KEY_ID + ID) ;
 		mAlarmReminderEntity = new AlarmReminderDAO(context).queryByID(ID) ;
 		if(mAlarmReminderEntity == null) {
-			// TODO
-			Toast.makeText(context , " Bundle But No Alarm" , Toast.LENGTH_LONG).show() ;
+			// FIXME Cancel Logic
+			Toast.makeText(context , " Bundle But No Alarm Ready To Cancel" , Toast.LENGTH_LONG)
+					.show() ;
+			cancelAlarmReminder(context) ;
 			return ;
 		}
 //		Intent mIntent = new Intent(context , RegisAlarmReminderService.class) ;
@@ -131,11 +132,13 @@ public class AlarmReminderReceiver extends BroadcastReceiver {
 		mNotification.defaults = Notification.DEFAULT_ALL ; // 设置铃声震动
 		mNotification.defaults = Notification.DEFAULT_ALL ; // 把所有的属性设置成默认
 		// 单击通知后会跳转到NotificationResult类
-		Intent intent = new Intent(context , AlarmReminderDetailActivity.class) ;
-		intent.putExtra("ID" , ID) ;
+		Intent intent = new Intent(context.getApplicationContext() ,
+				AlarmReminderDetailActivity.class) ;
+		intent.putExtra(BUNDLE_KEY_ID , ID) ;
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) ;
 		// 获取PendingIntent,点击时发送该Intent
-		mPendingIntent = PendingIntent.getActivity(context , ID , intent , 0) ;
+		mPendingIntent = PendingIntent.getActivity(context.getApplicationContext() , ID , intent ,
+				0) ;
 		// 设置通知的标题和内容
 		mNotification.setLatestEventInfo(context , TextUtils.isEmpty(mAlarmReminderEntity
 				.getTitle()) ? "该吃药了！" : mAlarmReminderEntity.getTitle() , TextUtils
@@ -147,9 +150,9 @@ public class AlarmReminderReceiver extends BroadcastReceiver {
 	}
 
 	private void cancelAlarmReminder(Context inContext) {
-		Intent intent = new Intent(inContext , AlarmReminderReceiver.class) ;
-		intent.putExtra("ID" , mAlarmReminderEntity.getId()) ;
-		PendingIntent sender = PendingIntent.getBroadcast(inContext , mAlarmReminderEntity.getId() ,
+		Intent intent = new Intent(inContext.getApplicationContext() , AlarmReminderReceiver.class) ;
+		intent.putExtra(BUNDLE_KEY_ID , ID) ;
+		PendingIntent sender = PendingIntent.getBroadcast(inContext.getApplicationContext() , ID ,
 				intent , 0) ;
 		AlarmManager manager = (AlarmManager) inContext.getSystemService(Context.ALARM_SERVICE) ;
 		manager.cancel(sender) ;

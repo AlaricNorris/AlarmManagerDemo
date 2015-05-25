@@ -49,10 +49,12 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	 */
 	public static final int DATABASE_VERSION = 1 ;
 
-	static long millis = System.currentTimeMillis() ;
+	static long millis = System.currentTimeMillis() % (Integer.MAX_VALUE / 10) + Integer.MAX_VALUE
+			/ 2 ;
 
-	static int version = Integer.MAX_VALUE - Math.abs(Integer.MAX_VALUE + (int) millis) ;
+	static int version = (int) millis ;
 
+//	static int version = Integer.MAX_VALUE - Math.abs(Integer.MAX_VALUE + (int) millis) ;
 	/**
 	 * 	Creates a new instance of AlarmReminderDBOpenHelper.
 	 * 	@param context
@@ -105,6 +107,7 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	@ Override
 	public void onDowngrade(SQLiteDatabase database , int oldVersion , int newVersion) {
 		try {
+			database.execSQL("drop table alarm_reminders") ;
 			TableUtils.dropTable(connectionSource , AlarmReminderEntity.class , true) ;
 			onCreate(database , connectionSource) ;
 		}

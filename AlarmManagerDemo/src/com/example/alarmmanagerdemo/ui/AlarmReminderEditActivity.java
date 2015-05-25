@@ -12,8 +12,6 @@
  */
 package com.example.alarmmanagerdemo.ui ;
 
-import java.util.Calendar ;
-import java.util.Date ;
 import android.app.Activity ;
 import android.app.FragmentManager ;
 import android.app.FragmentTransaction ;
@@ -21,20 +19,10 @@ import android.content.Context ;
 import android.os.Bundle ;
 import android.view.View ;
 import android.view.inputmethod.InputMethodManager ;
-import android.widget.ImageButton ;
 import android.widget.LinearLayout ;
-import android.widget.TextView ;
-import android.widget.Toast ;
-import com.android.datetimepicker.date.DatePickerDialog ;
-import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener ;
-import com.android.datetimepicker.time.RadialPickerLayout ;
-import com.android.datetimepicker.time.TimePickerDialog ;
-import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener ;
 import com.example.alarmmanagerdemo.ClickUtil ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
-import com.example.alarmmanagerdemo.thirdparty.niftydialog.Effectstype ;
-import com.example.alarmmanagerdemo.thirdparty.niftydialog.NiftyDialogBuilder ;
 import com.example.alarmmanagerdemo.ui.fragments.AlarmReminderEditFragment ;
 
 /**
@@ -64,7 +52,6 @@ public class AlarmReminderEditActivity extends Activity {
 	 */
 	@ Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState) ;
 		setContentView(R.layout.activity_alarm_reminder_edit) ;
 		extractBundleData() ;

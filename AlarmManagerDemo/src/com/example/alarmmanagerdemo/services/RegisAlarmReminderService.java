@@ -10,11 +10,6 @@
 package com.example.alarmmanagerdemo.services ;
 
 import java.util.Date ;
-import com.example.alarmmanagerdemo.R ;
-import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
-import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
-import com.example.alarmmanagerdemo.testcase.UnitTestCase ;
-import com.example.alarmmanagerdemo.ui.AlarmReminderDetailActivity ;
 import android.app.Notification ;
 import android.app.NotificationManager ;
 import android.app.PendingIntent ;
@@ -25,6 +20,11 @@ import android.os.IBinder ;
 import android.text.TextUtils ;
 import android.util.Log ;
 import android.widget.Toast ;
+import com.example.alarmmanagerdemo.R ;
+import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
+import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
+import com.example.alarmmanagerdemo.testcase.UnitTestCase ;
+import com.example.alarmmanagerdemo.ui.AlarmReminderDetailActivity ;
 
 /**
  *	ClassName:	RegisAlarmReminderService
