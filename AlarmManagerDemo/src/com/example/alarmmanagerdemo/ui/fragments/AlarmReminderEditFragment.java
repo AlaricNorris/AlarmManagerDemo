@@ -33,6 +33,7 @@ import android.widget.Switch ;
 import android.widget.TextView ;
 import android.widget.Toast ;
 import butterknife.ButterKnife ;
+import butterknife.InjectView ;
 import com.android.datetimepicker.date.DatePickerDialog ;
 import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener ;
 import com.android.datetimepicker.time.RadialPickerLayout ;
@@ -165,6 +166,9 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 //			mEditText_end , mEditText_triggerAtTime 
 			;
 
+	@ InjectView ( R.id.text_duration )
+	TextView mTextView_Duration ;
+
 	Switch mSwitch ;
 
 	Button mButton ;
@@ -186,6 +190,8 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mEditText_ID = ButterKnife.findById(mContentView , R.id.edit_id) ;
 		mEditText_title = ButterKnife.findById(mContentView , R.id.edit_title) ;
 		mEditText_description = ButterKnife.findById(mContentView , R.id.edit_description) ;
+		mTextView_Duration = ButterKnife.findById(mContentView , R.id.text_duration) ;
+		mTextView_Duration.setOnClickListener(this) ;
 		mButton.setOnClickListener(this) ;
 		//************************************************
 		mTextView_StartDateDisplay = ButterKnife.findById(mContentView , R.id.tvDate) ;
@@ -228,6 +234,8 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mEditText_ID.setText(new AlarmReminderDAO(getActivity()).queryLatestId() + 1 + "") ;
 		mEditText_title.setText("Auto") ;
 		mEditText_description.setText("该吃药了") ;
+		mTextView_Duration.setText(TimeConstants.converUnitReturnString(duration ,
+				TimeConstants.TimeUnit.Unit_MINUTE)) ;
 	}
 
 	/**
@@ -244,10 +252,16 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mEditText_ID.setText(mAlarmReminderEntity.getId() + "") ;
 		mEditText_title.setText(mAlarmReminderEntity.getTitle() + "") ;
 		mEditText_description.setText(mAlarmReminderEntity.getDescription() + "") ;
+		duration = mAlarmReminderEntity.getDuration() ;
+		mTextView_Duration.setText(TimeConstants.converUnitReturnString(duration ,
+				TimeConstants.TimeUnit.Unit_MINUTE)) ;
 	}
+
+	private long duration = TimeConstants.MINUTES_SEMI ;
 
 	private boolean saveAlarmReminder() {
 		if(editFlag) {
+			// 编辑模式  即更新数据库行
 			mAlarmReminderEntity.setId(Integer.parseInt(mEditText_ID.getText().toString())) ;
 			mAlarmReminderEntity.setTitle(mEditText_title.getText().toString().trim()) ;
 			mAlarmReminderEntity.setDescription(mEditText_description.getText().toString().trim()) ;
@@ -258,8 +272,10 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 			mAlarmReminderEntity.setIsOn(mSwitch.isChecked() ? AlarmReminderEntity.FLAG_TRUE
 					: AlarmReminderEntity.FLAG_FALSE) ;
 			mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
+			mAlarmReminderEntity.setDuration(duration) ;
 		}
 		else {
+			// 非编辑模式  插入新行
 			mAlarmReminderEntity = new AlarmReminderEntity() ;
 			mAlarmReminderEntity.setId(Integer.parseInt(mEditText_ID.getText().toString())) ;
 			mAlarmReminderEntity.setTitle(mEditText_title.getText().toString().trim()) ;
@@ -271,6 +287,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 			mAlarmReminderEntity.setIsOn(mSwitch.isChecked() ? AlarmReminderEntity.FLAG_TRUE
 					: AlarmReminderEntity.FLAG_FALSE) ;
 			mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
+			mAlarmReminderEntity.setDuration(duration) ;
 		}
 		AlarmReminderDAO alarmReminderDAO = new AlarmReminderDAO(getActivity()) ;
 		return alarmReminderDAO.createOrUpdate(mAlarmReminderEntity) ;
@@ -283,6 +300,10 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 	@ Override
 	public void onClick(View v) {
 		switch(v.getId()) {
+			case R.id.text_duration :
+				//TODO
+//				popupConfirmDialog() ;
+				break ;
 			case R.id.btn_save :
 				popupConfirmDialog() ;
 				break ;
@@ -402,7 +423,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		Log.i("tag" , "tempDate:" + tempDate.toString() + "\t" + tempDate.getTime()) ;
 //		manager.set(AlarmManager.RTC_WAKEUP , tempDate.getTime() , sender) ;
 		manager.setRepeating(AlarmManager.RTC_WAKEUP , tempDate.getTime() ,
-				TimeConstants.MINUTES_5 , sender) ;
+				TimeConstants.MINUTES_SEMI , sender) ;
 	}
 
 	/**
