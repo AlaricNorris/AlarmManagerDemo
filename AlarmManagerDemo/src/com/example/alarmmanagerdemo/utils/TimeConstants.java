@@ -9,7 +9,7 @@
  */
 package com.example.alarmmanagerdemo.utils ;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List ;
+import java.util.List ;
 
 /**
  *	ClassName:	TimeConstants
