@@ -9,6 +9,21 @@
         android:orientation="vertical"
         android:weightSum="200" >
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="25" >
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@android:drawable/ic_input_add"
+                android:drawablePadding="10dip"
+                android:text="设置提醒" />
+        </FrameLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
@@ -20,24 +35,50 @@
                 android:layout_height="match_parent"
                 android:layout_weight="40"
                 android:gravity="right|center_vertical"
-                android:text="Enable:"
+                android:text="成员:"
                 android:textSize="25dip" />
 
-            <Switch
-                android:id="@+id/switch_alarm"
+            <EditText
+                android:id="@+id/edit_member"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="60"
                 android:gravity="left|center_vertical"
-                android:switchPadding="10dip"
-                android:textOff="关闭"
-                android:textOn="开启" />
+                android:hint="title"
+                android:imeOptions="actionNext"
+                android:textSize="25dip" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="20"
+            android:weightSum="100" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="药物:"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/edit_medicine"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:hint="Description"
+                android:imeOptions="actionNext"
+                android:textSize="25dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="20"
+            android:visibility="gone"
             android:weightSum="100" >
 
             <TextView
@@ -72,67 +113,19 @@
                 android:layout_height="match_parent"
                 android:layout_weight="40"
                 android:gravity="right|center_vertical"
-                android:text="Title:"
+                android:text="重复:"
                 android:textSize="25dip" />
 
-            <EditText
-                android:id="@+id/edit_title"
+            <Spinner
+                android:id="@+id/spinner_duration"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="60"
-                android:gravity="left|center_vertical"
-                android:hint="title"
-                android:imeOptions="actionNext"
-                android:textSize="25dip" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="20"
-            android:weightSum="100" >
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="40"
-                android:gravity="right|center_vertical"
-                android:text="Desc:"
-                android:textSize="25dip" />
-
-            <EditText
-                android:id="@+id/edit_description"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="60"
-                android:gravity="left|center_vertical"
-                android:hint="Description"
-                android:imeOptions="actionNext"
-                android:textSize="25dip" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="20"
-            android:weightSum="100" >
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="40"
-                android:gravity="right|center_vertical"
-                android:text="Duration:"
-                android:textSize="25dip" />
-
-            <TextView
-                android:id="@+id/text_duration"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="60"
+                android:background="@null"
                 android:gravity="left|center_vertical"
                 android:hint="Duration"
                 android:imeOptions="actionNext"
+                android:labelFor="@id/alertTitle"
                 android:paddingLeft="10dip"
                 android:textSize="25dip" />
         </LinearLayout>
@@ -154,11 +147,11 @@
                 android:orientation="horizontal"
                 android:showDividers="middle" >
 
-                <ImageButton
-                    style="@android:style/Widget.Holo.Button.Borderless"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_date"
+                    android:padding="5dip"
+                    android:text="开始日期"
                     android:tint="@android:color/white" />
 
                 <ImageButton
@@ -171,43 +164,6 @@
 
                 <TextView
                     android:id="@+id/tvDate"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-light"
-                    android:paddingLeft="5dp"
-                    android:text="Date here!"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="25sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_end"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="?android:attr/dividerHorizontal"
-                android:dividerPadding="5dp"
-                android:orientation="horizontal"
-                android:showDividers="middle" >
-
-                <ImageButton
-                    style="@android:style/Widget.Holo.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_date"
-                    android:tint="@android:color/white" />
-
-                <ImageButton
-                    android:id="@+id/btn_enddate"
-                    style="@android:style/Widget.Holo.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@android:drawable/presence_offline"
-                    android:tint="@android:color/holo_blue_light" />
-
-                <TextView
-                    android:id="@+id/text_enddate"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -265,25 +221,30 @@
             </LinearLayout>
         </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="25" >
+            android:layout_weight="20"
+            android:weightSum="100" >
 
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@android:drawable/ic_input_add"
-                android:drawablePadding="10dip"
-                android:text="设置提醒" />
-        </FrameLayout>
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:gravity="right|center_vertical"
+                android:text="用药提醒"
+                android:textSize="25dip" />
+
+            <Switch
+                android:id="@+id/switch_alarm"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:switchPadding="10dip"
+                android:textOff="关闭"
+                android:textOn="开启" />
+        </LinearLayout>
     </LinearLayout>
-
-    <ViewStub
-        android:id="@+id/stub_page_error"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </FrameLayout>

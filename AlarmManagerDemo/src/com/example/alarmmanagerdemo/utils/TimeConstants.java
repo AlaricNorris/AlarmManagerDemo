@@ -158,6 +158,22 @@ public class TimeConstants {
 
 	public static final long MINUTES_10 = MINUTE * 10 ;
 
+	public static final long MINUTES_30 = MINUTE * 30 ;
+
+	public static final long HOUR_SEMI = MINUTES_30 ;
+
+	public static final long DAY_2 = HOUR * 24 * 2 ;
+
+	public static final long DAY_3 = HOUR * 24 * 3 ;
+
+	public static final long DAY_4 = HOUR * 24 * 4 ;
+
+	public static final long DAY_5 = HOUR * 24 * 5 ;
+
+	public static final long DAY_6 = HOUR * 24 * 6 ;
+
+	public static final long DAY_7 = HOUR * 24 * 7 ;
+
 	/**
 	 * 	converUnitReturnString:()
 	 *  ──────────────────────────────────

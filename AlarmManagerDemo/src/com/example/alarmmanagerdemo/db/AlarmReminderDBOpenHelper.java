@@ -16,6 +16,7 @@ import java.sql.SQLException ;
 import android.content.Context ;
 import android.database.sqlite.SQLiteDatabase ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
+import com.example.alarmmanagerdemo.entities.TriggerAtTimeEntity ;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper ;
 import com.j256.ormlite.dao.Dao ;
 import com.j256.ormlite.support.ConnectionSource ;
@@ -41,6 +42,8 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 
 	public static final String TABLE_NAME = "alarm_reminders.db" ;
 
+	public static final Class[] TABLES = { AlarmReminderEntity.class , TriggerAtTimeEntity.class } ;
+
 	/**
 	 * 	DB Version Code  
 	 * 	TODO Need modification when upgrade
@@ -65,7 +68,7 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	public AlarmReminderDBOpenHelper(Context context) {
 		// FIXME When Release 
 //		super(context , TABLE_NAME , null , DATABASE_VERSION) ;
-		super(context , TABLE_NAME , null , version) ;
+		super(context , TABLE_NAME , null , 2) ;
 		logger.info("millis" + millis) ;
 		logger.info("version" + version) ;
 	}
@@ -77,7 +80,9 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	@ Override
 	public void onCreate(SQLiteDatabase arg0 , ConnectionSource arg1) {
 		try {
-			TableUtils.createTable(connectionSource , AlarmReminderEntity.class) ;
+			for(Class< ? > tempClass : TABLES) {
+				TableUtils.createTable(connectionSource , tempClass) ;
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace() ;
@@ -92,7 +97,9 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	public void onUpgrade(SQLiteDatabase database , ConnectionSource connectionSource ,
 			int oldVersion , int newVersion) {
 		try {
-			TableUtils.dropTable(connectionSource , AlarmReminderEntity.class , true) ;
+			for(Class< ? > tempClass : TABLES) {
+				TableUtils.dropTable(connectionSource , tempClass , true) ;
+			}
 			onCreate(database , connectionSource) ;
 		}
 		catch(Exception e) {
@@ -108,7 +115,9 @@ public class AlarmReminderDBOpenHelper extends OrmLiteSqliteOpenHelper {
 	public void onDowngrade(SQLiteDatabase database , int oldVersion , int newVersion) {
 		try {
 			database.execSQL("drop table alarm_reminders") ;
-			TableUtils.dropTable(connectionSource , AlarmReminderEntity.class , true) ;
+			for(Class< ? > tempClass : TABLES) {
+				TableUtils.dropTable(connectionSource , tempClass , true) ;
+			}
 			onCreate(database , connectionSource) ;
 		}
 		catch(Exception e) {

@@ -18,7 +18,9 @@ import java.text.SimpleDateFormat ;
 import java.util.Date ;
 import com.example.alarmmanagerdemo.db.AlarmReminderDBOpenHelper ;
 import com.example.alarmmanagerdemo.utils.TimeConstants ;
+import com.j256.ormlite.dao.ForeignCollection ;
 import com.j256.ormlite.field.DatabaseField ;
+import com.j256.ormlite.field.ForeignCollectionField ;
 import com.j256.ormlite.table.DatabaseTable ;
 
 /**
@@ -51,11 +53,37 @@ public class AlarmReminderEntity implements Serializable {
 	@ DatabaseField ( generatedId = true )
 	private int id ;
 
+	/**
+	 * 	标题
+	 * 	String			:		title	
+	 * 	@since Ver 1.0
+	 */
 	@ DatabaseField ( columnName = "title" )
 	private String title ;
 
+	/**
+	 * 	描述
+	 * 	String			:		description	
+	 * 	@since Ver 1.0
+	 */
 	@ DatabaseField ( columnName = "description" )
 	private String description ;
+
+	/**
+	 * 	成员
+	 * 	String			:		member	
+	 * 	@since Ver 1.0
+	 */
+	@ DatabaseField ( columnName = "member" )
+	private String member ;
+
+	/**
+	 * 	药物
+	 * 	String			:		medicine	
+	 * 	@since Ver 1.0
+	 */
+	@ DatabaseField ( columnName = "medicine" )
+	private String medicine ;
 
 	/**
 	 * 	开始日期 
@@ -85,6 +113,9 @@ public class AlarmReminderEntity implements Serializable {
 	 */
 	@ DatabaseField ( columnName = "triggerattimes" )
 	private String triggerAtTime ;
+
+	@ ForeignCollectionField ( columnName = "trigger_at_times" )
+	private ForeignCollection<TriggerAtTimeEntity> atTimeEntities ;
 
 	/**
 	 * 	时间间隔
@@ -206,6 +237,38 @@ public class AlarmReminderEntity implements Serializable {
 	}
 
 	/**
+	 * 	member
+	 * 	@return  	the member
+	 */
+	public String getMember() {
+		return member ;
+	}
+
+	/**
+	 *	member
+	 *	@param   member    the member to set
+	 */
+	public void setMember(String member) {
+		this.member = member ;
+	}
+
+	/**
+	 * 	medicine
+	 * 	@return  	the medicine
+	 */
+	public String getMedicine() {
+		return medicine ;
+	}
+
+	/**
+	 *	medicine
+	 *	@param   medicine    the medicine to set
+	 */
+	public void setMedicine(String medicine) {
+		this.medicine = medicine ;
+	}
+
+	/**
 	 * 	stratdate
 	 * 	@return  	the stratdate
 	 */
@@ -292,7 +355,7 @@ public class AlarmReminderEntity implements Serializable {
 	}
 
 	public Date getTriggerAtTime() {
-		Date mDate = null ;
+		Date mDate = new Date() ;
 		try {
 			mDate = mSimpleDateFormat_HHmmss.parse(triggerAtTime) ;
 		}
@@ -312,6 +375,22 @@ public class AlarmReminderEntity implements Serializable {
 
 	public void setTriggerAtTime(Date inDate) {
 		this.triggerAtTime = mSimpleDateFormat_HHmmss.format(inDate) ;
+	}
+
+	/**
+	 * 	atTimeEntities
+	 * 	@return  	the atTimeEntities
+	 */
+	public ForeignCollection<TriggerAtTimeEntity> getAtTimeEntities() {
+		return atTimeEntities ;
+	}
+
+	/**
+	 *	atTimeEntities
+	 *	@param   atTimeEntities    the atTimeEntities to set
+	 */
+	public void setAtTimeEntities(ForeignCollection<TriggerAtTimeEntity> atTimeEntities) {
+		this.atTimeEntities = atTimeEntities ;
 	}
 
 	/**
@@ -372,9 +451,14 @@ public class AlarmReminderEntity implements Serializable {
 	 */
 	@ Override
 	public String toString() {
+		String mTriggerAtTimesString = "" ;
+		for(TriggerAtTimeEntity tempEntity : atTimeEntities) {
+			mTriggerAtTimesString += tempEntity.toSimpleString() ;
+		}
 		return "AlarmReminderEntity [id=" + id + ", title=" + title + ", description="
-				+ description + ", stratdate=" + stratdate + ", enddate=" + enddate
-				+ ", timesperday=" + timesperday + ", TriggerAtTimes=" + triggerAtTime
+				+ description + ", member=" + member + ", medicine=" + medicine + ", stratdate="
+				+ stratdate + ", enddate=" + enddate + ", timesperday=" + timesperday
+				+ ", triggerAtTime=" + triggerAtTime + ", atTimeEntities=" + mTriggerAtTimesString
 				+ ", duration=" + duration + ", isOn=" + isOn + ", needVibration=" + needVibration
 				+ "]" ;
 	}

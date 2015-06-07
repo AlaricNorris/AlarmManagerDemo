@@ -13,8 +13,12 @@
 package com.example.alarmmanagerdemo.ui.fragments ;
 
 import java.text.ParseException ;
+import java.util.ArrayList ;
 import java.util.Calendar ;
+import java.util.Collections ;
 import java.util.Date ;
+import java.util.HashMap ;
+import java.util.LinkedHashMap ;
 import android.app.AlarmManager ;
 import android.app.Fragment ;
 import android.app.PendingIntent ;
@@ -22,13 +26,18 @@ import android.content.Context ;
 import android.content.Intent ;
 import android.os.Bundle ;
 import android.util.Log ;
+import android.util.SparseArray ;
 import android.view.LayoutInflater ;
 import android.view.View ;
 import android.view.View.OnClickListener ;
 import android.view.ViewGroup ;
+import android.widget.AdapterView ;
+import android.widget.AdapterView.OnItemSelectedListener ;
+import android.widget.ArrayAdapter ;
 import android.widget.Button ;
 import android.widget.EditText ;
 import android.widget.ImageButton ;
+import android.widget.Spinner ;
 import android.widget.Switch ;
 import android.widget.TextView ;
 import android.widget.Toast ;
@@ -39,13 +48,11 @@ import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener ;
 import com.android.datetimepicker.time.RadialPickerLayout ;
 import com.android.datetimepicker.time.TimePickerDialog ;
 import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener ;
-import com.example.alarmmanagerdemo.ClickUtil ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
+import com.example.alarmmanagerdemo.entities.TriggerAtTimeEntity ;
 import com.example.alarmmanagerdemo.receivers.AlarmReminderReceiver ;
-import com.example.alarmmanagerdemo.thirdparty.niftydialog.Effectstype ;
-import com.example.alarmmanagerdemo.thirdparty.niftydialog.NiftyDialogBuilder ;
 import com.example.alarmmanagerdemo.ui.AlarmReminderHomeActivity ;
 import com.example.alarmmanagerdemo.utils.TimeConstants ;
 import de.greenrobot.event.EventBus ;
@@ -166,8 +173,46 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 //			mEditText_end , mEditText_triggerAtTime 
 			;
 
-	@ InjectView ( R.id.text_duration )
-	TextView mTextView_Duration ;
+	@ InjectView ( R.id.spinner_duration )
+	Spinner mSpinner_Duration ;
+
+	private ArrayAdapter<String> adapter ;
+
+	SparseArray<String> mSparseArray = new SparseArray<String>() ;
+	{
+		mSparseArray.put((int) TimeConstants.DAY , VALUE_DAY1) ;
+		mSparseArray.put((int) TimeConstants.DAY_2 , VALUE_DAY2) ;
+		mSparseArray.put((int) TimeConstants.DAY_3 , VALUE_DAY3) ;
+		mSparseArray.put((int) TimeConstants.DAY_4 , VALUE_DAY4) ;
+		mSparseArray.put((int) TimeConstants.DAY_5 , VALUE_DAY5) ;
+		mSparseArray.put((int) TimeConstants.DAY_6 , VALUE_DAY6) ;
+		mSparseArray.put((int) TimeConstants.DAY_7 , VALUE_DAY7) ;
+	}
+
+	public static final String VALUE_DAY1 = "每一天" ;
+
+	public static final String VALUE_DAY2 = "每两天" ;
+
+	public static final String VALUE_DAY3 = "每三天" ;
+
+	public static final String VALUE_DAY4 = "每四天" ;
+
+	public static final String VALUE_DAY5 = "每五天" ;
+
+	public static final String VALUE_DAY6 = "每六天" ;
+
+	public static final String VALUE_DAY7 = "每七天" ;
+
+	ArrayList<String> mArrayList = new ArrayList<String>() ;
+	{
+		mArrayList.add(VALUE_DAY1) ;
+		mArrayList.add(VALUE_DAY2) ;
+		mArrayList.add(VALUE_DAY3) ;
+		mArrayList.add(VALUE_DAY4) ;
+		mArrayList.add(VALUE_DAY5) ;
+		mArrayList.add(VALUE_DAY6) ;
+		mArrayList.add(VALUE_DAY7) ;
+	}
 
 	Switch mSwitch ;
 
@@ -188,10 +233,26 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mButton = ButterKnife.findById(mContentView , R.id.btn_save) ;
 		mSwitch = ButterKnife.findById(mContentView , R.id.switch_alarm) ;
 		mEditText_ID = ButterKnife.findById(mContentView , R.id.edit_id) ;
-		mEditText_title = ButterKnife.findById(mContentView , R.id.edit_title) ;
-		mEditText_description = ButterKnife.findById(mContentView , R.id.edit_description) ;
-		mTextView_Duration = ButterKnife.findById(mContentView , R.id.text_duration) ;
-		mTextView_Duration.setOnClickListener(this) ;
+		mEditText_title = ButterKnife.findById(mContentView , R.id.edit_member) ;
+		mEditText_description = ButterKnife.findById(mContentView , R.id.edit_medicine) ;
+		mSpinner_Duration = ButterKnife.findById(mContentView , R.id.spinner_duration) ;
+		adapter = new ArrayAdapter<>(getActivity() , android.R.layout.simple_spinner_item ,
+				mArrayList) ;
+		mSpinner_Duration.setAdapter(adapter) ;
+		mSpinner_Duration.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@ Override
+			public void onItemSelected(AdapterView< ? > arg0 , View arg1 , int arg2 , long arg3) {
+				// TODO Auto-generated method stub
+				duration = mSparseArray.keyAt(mSparseArray.indexOfValue(adapter.getItem(arg2))) ;
+			}
+
+			@ Override
+			public void onNothingSelected(AdapterView< ? > arg0) {
+				// TODO Auto-generated method stub
+			}
+		}) ;
+//		mSpinner_Duration.setOnClickListener(this) ;
 		mButton.setOnClickListener(this) ;
 		//************************************************
 		mTextView_StartDateDisplay = ButterKnife.findById(mContentView , R.id.tvDate) ;
@@ -201,12 +262,12 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		mButton_EndDate = ButterKnife.findById(mContentView , R.id.btn_enddate) ;
 		mButton_Time = ButterKnife.findById(mContentView , R.id.btnChangeTime) ;
 		mButton_StartDate.setOnClickListener(this) ;
-		mButton_EndDate.setOnClickListener(this) ;
+//		mButton_EndDate.setOnClickListener(this) ;
 		mButton_Time.setOnClickListener(this) ;
 		mTextView_StartDateDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd
 				.format(mDate_Start)) ;
-		mTextView_EndDateDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd
-				.format(mDate_End)) ;
+//		mTextView_EndDateDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd
+//				.format(mDate_End)) ;
 		mTextView_TimeDisplay.setText(AlarmReminderEntity.mSimpleDateFormat_HHmmss
 				.format(mDate_TriggerAtTime)) ;
 		if(editFlag) {
@@ -214,6 +275,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 				fillContentView() ;
 				return ;
 			}
+			generateDefaultContentView() ;
 		}
 		else {
 			generateDefaultContentView() ;
@@ -230,12 +292,14 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 */
 	private void generateDefaultContentView() {
+		duration = TimeConstants.DAY ;
 		mSwitch.setChecked(true) ;
 		mEditText_ID.setText(new AlarmReminderDAO(getActivity()).queryLatestId() + 1 + "") ;
 		mEditText_title.setText("Auto") ;
 		mEditText_description.setText("该吃药了") ;
-		mTextView_Duration.setText(TimeConstants.converUnitReturnString(duration ,
-				TimeConstants.TimeUnit.Unit_MINUTE)) ;
+		mSpinner_Duration.setSelection(mArrayList.indexOf(mSparseArray.indexOfKey((int) duration))) ;
+//		mSpinner_Duration.setText(TimeConstants.converUnitReturnString(duration ,
+//				TimeConstants.TimeUnit.Unit_MINUTE)) ;
 	}
 
 	/**
@@ -248,13 +312,15 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 */
 	private void fillContentView() {
+		duration = mAlarmReminderEntity.getDuration() ;
 		mSwitch.setChecked(mAlarmReminderEntity.isOn()) ;
 		mEditText_ID.setText(mAlarmReminderEntity.getId() + "") ;
 		mEditText_title.setText(mAlarmReminderEntity.getTitle() + "") ;
 		mEditText_description.setText(mAlarmReminderEntity.getDescription() + "") ;
 		duration = mAlarmReminderEntity.getDuration() ;
-		mTextView_Duration.setText(TimeConstants.converUnitReturnString(duration ,
-				TimeConstants.TimeUnit.Unit_MINUTE)) ;
+		mSpinner_Duration.setSelection(mArrayList.indexOf(mSparseArray.indexOfKey((int) duration))) ;
+//		mSpinner_Duration.setText(TimeConstants.converUnitReturnString(duration ,
+//				TimeConstants.TimeUnit.Unit_MINUTE)) ;
 	}
 
 	private long duration = TimeConstants.MINUTES_SEMI ;
@@ -265,7 +331,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 			mAlarmReminderEntity.setId(Integer.parseInt(mEditText_ID.getText().toString())) ;
 			mAlarmReminderEntity.setTitle(mEditText_title.getText().toString().trim()) ;
 			mAlarmReminderEntity.setDescription(mEditText_description.getText().toString().trim()) ;
-			mAlarmReminderEntity.setTimesperday(1) ;
+			mAlarmReminderEntity.setTimesperday(2) ;
 			mAlarmReminderEntity.setStratdate(mDate_Start) ;
 			mAlarmReminderEntity.setEnddate(mDate_End) ;
 			mAlarmReminderEntity.setTriggerAtTime(mDate_TriggerAtTime) ;
@@ -273,6 +339,9 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 					: AlarmReminderEntity.FLAG_FALSE) ;
 			mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
 			mAlarmReminderEntity.setDuration(duration) ;
+			TriggerAtTimeEntity mAtTimeEntity = new TriggerAtTimeEntity() ;
+			mAtTimeEntity.setAlarmReminderEntity(mAlarmReminderEntity) ;
+			mAtTimeEntity.setTriggerAtTime(mDate_TriggerAtTime) ;
 		}
 		else {
 			// 非编辑模式  插入新行
@@ -280,7 +349,7 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 			mAlarmReminderEntity.setId(Integer.parseInt(mEditText_ID.getText().toString())) ;
 			mAlarmReminderEntity.setTitle(mEditText_title.getText().toString().trim()) ;
 			mAlarmReminderEntity.setDescription(mEditText_description.getText().toString().trim()) ;
-			mAlarmReminderEntity.setTimesperday(1) ;
+			mAlarmReminderEntity.setTimesperday(2) ;
 			mAlarmReminderEntity.setStratdate(mDate_Start) ;
 			mAlarmReminderEntity.setEnddate(mDate_End) ;
 			mAlarmReminderEntity.setTriggerAtTime(mDate_TriggerAtTime) ;
@@ -300,12 +369,13 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 	@ Override
 	public void onClick(View v) {
 		switch(v.getId()) {
-			case R.id.text_duration :
+			case R.id.spinner_duration :
 				//TODO
 //				popupConfirmDialog() ;
 				break ;
 			case R.id.btn_save :
-				popupConfirmDialog() ;
+				insertOrSaveRemider() ;
+//				popupConfirmDialog() ;
 				break ;
 			case R.id.btnChangeDate :
 				mDatePickerDialog_Start.setYearRange(mCalendar_StartDate.get(Calendar.YEAR) , 2030) ;
@@ -323,65 +393,26 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 		}
 	}
 
-	NiftyDialogBuilder mDialog_Confirm ;
-
 	/**
-	 * 	popupConfirmDialog:(保存事件回调)
-	 *  ──────────────────────────────────    
-	 * 	@throws 
-	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　Ver 1.0
+	 * 	insertOrSaveRemider:()
+	 *  ──────────────────────────────────	
+	 *	@version	Ver 1.0	
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
-	 *	2015-5-20	上午10:13:17	Modified By Norris 
+	 * 	Modified By 	AlaricNorris		 2015-6-6下午10:23:56
+	 *	Modifications:	TODO
 	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
 	 */
-	private void popupConfirmDialog() {
-		if(ClickUtil.isFastDoubleClick()) {
-			return ;
+	private void insertOrSaveRemider() {
+		if(saveAlarmReminder()) {
+			setupAlarmReminder() ;
+			Toast.makeText(getActivity() , "保存成功" , 0).show() ;
+			getActivity().finish() ;
+			EventBus.getDefault().post(new AlarmReminderHomeActivity.Event_Refresh()) ;
 		}
-		mDialog_Confirm = NiftyDialogBuilder.getInstance(getActivity()) ;
-		mDialog_Confirm.withTitle("确认保存？")
-				//.withTitle(null)  no title
-				.withTitleColor("#FFFFFF")
-				//def
-				.withDividerColor("#11000000")
-				//def
-				.withMessage("请确认开启提醒")
-				//.withMessage(null)  no Msg
-				.withMessageColor("#FFFFFFFF")
-				//def  | withMessageColor(int resid)
-				.withDialogColor("#FFE74C3C")
-				//def  | withDialogColor(int resid)
-				.withIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert))
-				.withDuration(400) //def
-				.withEffect(Effectstype.Newspager) //def Effectstype.Slidetop
-				.withButton1Text("确认") //def gone
-				.withButton2Text("取消") //def gone
-				.isCancelableOnTouchOutside(false) //def    | isCancelable(true)
-//				.setCustomView(R.layout.custom_view , v.getContext()) //.setCustomView(View or ResId,context)
-				.setButton1Click(new View.OnClickListener() {
-
-					@ Override
-					public void onClick(View v) {
-						if(saveAlarmReminder()) {
-							setupAlarmReminder() ;
-							mDialog_Confirm.dismiss() ;
-							Toast.makeText(getActivity() , "保存成功" , 0).show() ;
-							getActivity().finish() ;
-							EventBus.getDefault().post(
-									new AlarmReminderHomeActivity.Event_Refresh()) ;
-						}
-						else {
-							mDialog_Confirm.dismiss() ;
-							Toast.makeText(getActivity() , "保存失败" , 0).show() ;
-						}
-					}
-				}).setButton2Click(new View.OnClickListener() {
-
-					@ Override
-					public void onClick(View v) {
-						mDialog_Confirm.dismiss() ;
-					}
-				}).show() ;
+		else {
+			Toast.makeText(getActivity() , "保存失败" , 0).show() ;
+		}
 	}
 
 	/**
@@ -609,5 +640,12 @@ public class AlarmReminderEditFragment extends Fragment implements OnClickListen
 					}
 				} , mCalendar_EndDate.get(Calendar.YEAR) , mCalendar_EndDate.get(Calendar.MONTH) ,
 				mCalendar_EndDate.get(Calendar.DAY_OF_MONTH)) ;
+	}
+
+	public static class EB_SaveReminder {
+	}
+
+	public void onEvent(EB_SaveReminder inEvent) {
+		insertOrSaveRemider() ;
 	}
 }

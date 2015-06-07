@@ -23,7 +23,9 @@ import android.content.Intent ;
 import android.test.AndroidTestCase ;
 import android.util.Log ;
 import com.example.alarmmanagerdemo.daos.AlarmReminderDAO ;
+import com.example.alarmmanagerdemo.daos.TriggerAtTimeDAO ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
+import com.example.alarmmanagerdemo.entities.TriggerAtTimeEntity ;
 import com.example.alarmmanagerdemo.receivers.AlarmReminderReceiver ;
 
 /**
@@ -77,7 +79,7 @@ public class UnitTestCase extends AndroidTestCase {
 		mAlarmReminderEntity.setEnddate(new Date(2 * 86400000 + System.currentTimeMillis())) ;
 		mAlarmReminderEntity.setTriggerAtTime(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
 				.format(new Date(10000 + System.currentTimeMillis()))) ;
-		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_TRUE) ;
+		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_FALSE) ;
 		mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
 		return mAlarmReminderEntity ;
 	}
@@ -150,7 +152,7 @@ public class UnitTestCase extends AndroidTestCase {
 		mAlarmReminderEntity.setEnddate(new Date(86400000 + System.currentTimeMillis())) ;
 		mAlarmReminderEntity.setTriggerAtTime(AlarmReminderEntity.mSimpleDateFormat_yyyyMMdd_HHmmss
 				.format(new Date(5000 + System.currentTimeMillis()))) ;
-		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_TRUE) ;
+		mAlarmReminderEntity.setIsOn(AlarmReminderEntity.FLAG_FALSE) ;
 		mAlarmReminderEntity.setNeedVibration(AlarmReminderEntity.FLAG_TRUE) ;
 		return mAlarmReminderEntity ;
 	}
@@ -183,5 +185,30 @@ public class UnitTestCase extends AndroidTestCase {
 		AlarmReminderDAO alarmReminderDAO = new AlarmReminderDAO(getContext()) ;
 		Log.i(TAG , "CorU" + alarmReminderDAO.queryLatestId()) ;
 		Log.i(TAG , "queryAll" + alarmReminderDAO.queryAll()) ;
+	}
+
+	public void testname() throws Exception {
+		TriggerAtTimeDAO mAtTimeDAO = new TriggerAtTimeDAO(getContext()) ;
+		TriggerAtTimeEntity mEntity = new TriggerAtTimeEntity() ;
+		mEntity.setId(1) ;
+		mEntity.setTriggerAtTime(new Date()) ;
+		mEntity.setAlarmReminderEntity(new AlarmReminderDAO(getContext()).queryByID(1)) ;
+		Log.i(TAG , "CorU" + mAtTimeDAO.createOrUpdate(mEntity)) ;
+	}
+
+	/**
+	 * 	testQuery:()
+	 *  ──────────────────────────────────
+	 * 	@param mAtTimeDAO	
+	 *	@version	Ver 1.0	
+	 * 	@since  	I used to be a programmer like you, then I took an arrow in the knee　
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 * 	Modified By 	AlaricNorris		 2015-6-7下午3:54:07
+	 *	Modifications:	TODO
+	 *	──────────────────────────────────────────────────────────────────────────────────────────────────────
+	 */
+	public void testQuery() {
+		TriggerAtTimeDAO mAtTimeDAO = new TriggerAtTimeDAO(getContext()) ;
+		Log.i(TAG , "queryAll" + mAtTimeDAO.queryAll()) ;
 	}
 }

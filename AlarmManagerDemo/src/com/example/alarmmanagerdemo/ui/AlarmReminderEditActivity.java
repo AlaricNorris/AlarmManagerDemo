@@ -24,6 +24,7 @@ import com.example.alarmmanagerdemo.ClickUtil ;
 import com.example.alarmmanagerdemo.R ;
 import com.example.alarmmanagerdemo.entities.AlarmReminderEntity ;
 import com.example.alarmmanagerdemo.ui.fragments.AlarmReminderEditFragment ;
+import de.greenrobot.event.EventBus ;
 
 /**
  *	ClassName:	AlarmReminderEditActivity
@@ -141,5 +142,12 @@ public class AlarmReminderEditActivity extends Activity {
 			return ;
 		}
 		finish() ;
+	}
+
+	public void save(View inView) {
+		if(ClickUtil.isFastDoubleClick()) {
+			return ;
+		}
+		EventBus.getDefault().post(new AlarmReminderEditFragment.EB_SaveReminder()) ;
 	}
 }

@@ -13,7 +13,7 @@
         android:layout_margin="10dip"
         android:gravity="center"
         android:padding="10dip"
-        android:text="Sorry! Page Error!"
+        android:text="对不起，页面传值有误\n请返回重新进入"
         android:textColor="#FF0000"
         android:textSize="30dip" />
 
